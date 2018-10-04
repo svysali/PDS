@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse.pds.model;
 
-// line 32 "../../../../../pds.ump"
+// line 48 "../../../../../pds.ump"
 public class Ingredient
 {
 
@@ -24,6 +24,16 @@ public class Ingredient
 
   public Ingredient(String aName, float aPrice, PDS aPDS)
   {
+    // line 51 "../../../../../pds.ump"
+    if (aName == null || aName.length() == 0) {
+    	  throw new RuntimeException("The name of an ingredient cannot be empty.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
+    // line 57 "../../../../../pds.ump"
+    if (aPrice <= 0.0f) {
+    	  throw new RuntimeException("The price cannot be less than zero");
+    	}
+    // END OF UMPLE BEFORE INJECTION
     name = aName;
     price = aPrice;
     boolean didAddPDS = setPDS(aPDS);
@@ -40,6 +50,11 @@ public class Ingredient
   public boolean setName(String aName)
   {
     boolean wasSet = false;
+    // line 51 "../../../../../pds.ump"
+    if (aName == null || aName.length() == 0) {
+    	  throw new RuntimeException("The name of an ingredient cannot be empty.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
     name = aName;
     wasSet = true;
     return wasSet;
@@ -48,6 +63,11 @@ public class Ingredient
   public boolean setPrice(float aPrice)
   {
     boolean wasSet = false;
+    // line 57 "../../../../../pds.ump"
+    if (aPrice <= 0.0f) {
+    	  throw new RuntimeException("The price cannot be less than zero");
+    	}
+    // END OF UMPLE BEFORE INJECTION
     price = aPrice;
     wasSet = true;
     return wasSet;

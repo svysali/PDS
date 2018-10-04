@@ -127,10 +127,7 @@ public class PDS
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Pizza addPizza(float aPrice)
-  {
-    return new Pizza(aPrice, this);
-  }
+
 
   public boolean addPizza(Pizza aPizza)
   {

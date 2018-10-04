@@ -14,24 +14,50 @@ class PDS {
 //Pizza abstract
 class Pizza {
   Integer size = 12;
-  Float price;
   * -> * Ingredient ingredients;
+  abstract float getPrice();
 }
 
 class MenuPizza {
   isA Pizza;
   String name;
+  before constructor, setName {
+    if (aName == null || aName.length() == 0) {
+	  throw new RuntimeException("The name for a pizza on the Menu cannot be empty.");
+	}
+  }
   Float calorieCount;
+  before constructor, setCalorieCount {
+    if (aCalorieCount <= 0.0f ) {
+	  throw new RuntimeException("The calorie count for a pizza on the Menu cannot be less than zero.");
+	}
+  }
+  Float price;
+  before constructor, setPrice {
+    if (aPrice <= 0.0f ) {
+	  throw new RuntimeException("The price for a pizza on the Menu cannot be less than zero.");
+	}
+  }
 }
 
 class CustomPizza {
   isA Pizza;
-  Float basePrice;
+  Float basePrice = 5.0f;
 }
 
 class Ingredient {
   String name;
+  before constructor, setName {
+    if (aName == null || aName.length() == 0) {
+	  throw new RuntimeException("The name of an ingredient cannot be empty.");
+	}
+  }
   Float price;
+  before constructor, setPrice {
+    if (aPrice <= 0.0f) {
+	  throw new RuntimeException("The price cannot be less than zero");
+	}
+  }
 }
 
 class Customer {

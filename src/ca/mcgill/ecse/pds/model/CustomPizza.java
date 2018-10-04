@@ -2,9 +2,10 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse.pds.model;
+import java.util.*;
 
-// line 27 "../../../../../pds.ump"
-public class CustomPizza extends Pizza
+// line 43 "../../../../../pds.ump"
+public abstract class CustomPizza extends Pizza
 {
 
   //------------------------
@@ -18,10 +19,10 @@ public class CustomPizza extends Pizza
   // CONSTRUCTOR
   //------------------------
 
-  public CustomPizza(float aPrice, PDS aPDS, float aBasePrice)
+  public CustomPizza(PDS aPDS)
   {
-    super(aPrice, aPDS);
-    basePrice = aBasePrice;
+    super(aPDS);
+    basePrice = (float) 5.0;
   }
 
   //------------------------

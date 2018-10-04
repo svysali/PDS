@@ -8,7 +8,7 @@ import java.util.*;
  * Pizza abstract
  */
 // line 15 "../../../../../pds.ump"
-public class Pizza
+public abstract class Pizza
 {
 
   //------------------------
@@ -17,7 +17,6 @@ public class Pizza
 
   //Pizza Attributes
   private int size;
-  private float price;
 
   //Pizza Associations
   private List<Ingredient> ingredients;
@@ -27,10 +26,9 @@ public class Pizza
   // CONSTRUCTOR
   //------------------------
 
-  public Pizza(float aPrice, PDS aPDS)
+  public Pizza(PDS aPDS)
   {
     size = 12;
-    price = aPrice;
     ingredients = new ArrayList<Ingredient>();
     boolean didAddPDS = setPDS(aPDS);
     if (!didAddPDS)
@@ -51,22 +49,9 @@ public class Pizza
     return wasSet;
   }
 
-  public boolean setPrice(float aPrice)
-  {
-    boolean wasSet = false;
-    price = aPrice;
-    wasSet = true;
-    return wasSet;
-  }
-
   public int getSize()
   {
     return size;
-  }
-
-  public float getPrice()
-  {
-    return price;
   }
   /* Code from template association_GetMany */
   public Ingredient getIngredient(int index)
@@ -191,12 +176,13 @@ public class Pizza
     }
   }
 
+  public abstract float getPrice();
+
 
   public String toString()
   {
     return super.toString() + "["+
-            "size" + ":" + getSize()+ "," +
-            "price" + ":" + getPrice()+ "]" + System.getProperties().getProperty("line.separator") +
+            "size" + ":" + getSize()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "pDS = "+(getPDS()!=null?Integer.toHexString(System.identityHashCode(getPDS())):"null");
   }
 }
