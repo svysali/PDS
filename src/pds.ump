@@ -1,0 +1,62 @@
+/*
+  Pizza delivery System - UML class diagram written in Umple
+*/
+
+//Namespace for core of the system.
+namespace ca.mcgill.ecse.pds.model;
+
+class PDS {
+ 1 <@>- * Pizza pizzas;
+ 1 <@>- * Customer customers;
+ 1 <@>- * Ingredient ingredients;
+}
+
+//Pizza abstract
+class Pizza {
+  Integer size = 12;
+  Float price;
+  * -> * Ingredient ingredients;
+}
+
+class MenuPizza {
+  isA Pizza;
+  String name;
+  Float calorieCount;
+}
+
+class CustomPizza {
+  isA Pizza;
+  Float basePrice;
+}
+
+class Ingredient {
+  String name;
+  Float price;
+}
+
+class Customer {
+  String name;
+  String phoneNumber;
+  String emailAddress;
+  String deliveryAddress;
+  }
+
+class Order {
+ autounique number;
+  Date date;
+  1 <@>- * OrderItem orderItem;
+  Float totalPrice;
+  Boolean isDelivered = false; 
+}
+
+class OrderItem {
+ Float price;
+  * -> 1 Pizza;
+  1 <@>- * Customization customizations;
+}
+
+class Customization {
+  enum Type { Add, Remove , Replace }  
+  Type type;
+  * -> * Ingredient ingredients;
+}
