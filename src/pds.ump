@@ -36,9 +36,20 @@ class Ingredient {
 
 class Customer {
   String name;
+    before constructor, setName {
+    if (aName == null || aName.length() == 0) {
+	  throw new RuntimeException("The name of a customer cannot be empty.");
+	}
+  }
   String phoneNumber;
   String emailAddress;
   String deliveryAddress;
+  	before constructor, setDeliveryAddress {
+    if (aDeliveryAddress == null || aDeliveryAddress.length() == 0) {
+	  throw new RuntimeException("The address of a customer cannot be empty.");
+		}
+  	}
+  
   }
 
 class Order {
@@ -46,6 +57,11 @@ class Order {
   Date date;
   1 <@>- * OrderItem orderItem;
   Float totalPrice;
+  before constructor, setTotalPrice {
+    if (aTotalPrice != 0.0) {
+	  throw new RuntimeException("The initial price of an order cannot be more than zero.");
+	}
+	}
   Boolean isDelivered = false; 
 }
 

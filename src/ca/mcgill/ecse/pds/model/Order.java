@@ -5,7 +5,7 @@ package ca.mcgill.ecse.pds.model;
 import java.sql.Date;
 import java.util.*;
 
-// line 44 "../../../../../pds.ump"
+// line 55 "../../../../../pds.ump"
 public class Order
 {
 
@@ -36,6 +36,11 @@ public class Order
 
   public Order(Date aDate, float aTotalPrice)
   {
+    // line 61 "../../../../../pds.ump"
+    if (aTotalPrice != 0.0) {
+    	  throw new RuntimeException("The initial price of an order cannot be more than zero.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
     date = aDate;
     totalPrice = aTotalPrice;
     isDelivered = false;
@@ -58,6 +63,11 @@ public class Order
   public boolean setTotalPrice(float aTotalPrice)
   {
     boolean wasSet = false;
+    // line 61 "../../../../../pds.ump"
+    if (aTotalPrice != 0.0) {
+    	  throw new RuntimeException("The initial price of an order cannot be more than zero.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
     totalPrice = aTotalPrice;
     wasSet = true;
     return wasSet;

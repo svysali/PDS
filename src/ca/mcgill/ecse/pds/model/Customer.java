@@ -26,6 +26,16 @@ public class Customer
 
   public Customer(String aName, String aPhoneNumber, String aEmailAddress, String aDeliveryAddress, PDS aPDS)
   {
+    // line 40 "../../../../../pds.ump"
+    if (aName == null || aName.length() == 0) {
+    	  throw new RuntimeException("The name of a customer cannot be empty.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
+    // line 48 "../../../../../pds.ump"
+    if (aDeliveryAddress == null || aDeliveryAddress.length() == 0) {
+    	  throw new RuntimeException("The address of a customer cannot be empty.");
+    		}
+    // END OF UMPLE BEFORE INJECTION
     name = aName;
     phoneNumber = aPhoneNumber;
     emailAddress = aEmailAddress;
@@ -44,6 +54,11 @@ public class Customer
   public boolean setName(String aName)
   {
     boolean wasSet = false;
+    // line 40 "../../../../../pds.ump"
+    if (aName == null || aName.length() == 0) {
+    	  throw new RuntimeException("The name of a customer cannot be empty.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
     name = aName;
     wasSet = true;
     return wasSet;
@@ -68,6 +83,11 @@ public class Customer
   public boolean setDeliveryAddress(String aDeliveryAddress)
   {
     boolean wasSet = false;
+    // line 48 "../../../../../pds.ump"
+    if (aDeliveryAddress == null || aDeliveryAddress.length() == 0) {
+    	  throw new RuntimeException("The address of a customer cannot be empty.");
+    		}
+    // END OF UMPLE BEFORE INJECTION
     deliveryAddress = aDeliveryAddress;
     wasSet = true;
     return wasSet;

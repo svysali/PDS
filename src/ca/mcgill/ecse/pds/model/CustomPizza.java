@@ -2,6 +2,7 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse.pds.model;
+import java.util.*;
 
 // line 27 "../../../../../pds.ump"
 public class CustomPizza extends Pizza
