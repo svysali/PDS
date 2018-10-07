@@ -5,10 +5,13 @@
 //Namespace for core of the system.
 namespace ca.mcgill.ecse.pds.model;
 
+use PDSPersistence.ump;
+
 class PDS {
  1 <@>- * Pizza pizzas;
  1 <@>- * Customer customers;
  1 <@>- * Ingredient ingredients;
+ 1 <@>- * Order orders;
 }
 
 //Pizza abstract
@@ -61,14 +64,16 @@ class Ingredient {
 }
 
 class Customer {
+  autounique id;
   String name;
   String phoneNumber;
   String emailAddress;
   String deliveryAddress;
-  }
+  1 -- * Order orders;
+}
 
 class Order {
- autounique number;
+  autounique number;
   Date date;
   1 <@>- * OrderItem orderItem;
   Float totalPrice;

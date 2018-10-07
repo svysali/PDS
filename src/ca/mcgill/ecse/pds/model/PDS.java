@@ -2,10 +2,13 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse.pds.model;
+import java.io.Serializable;
 import java.util.*;
+import java.sql.Date;
 
-// line 8 "../../../../../pds.ump"
-public class PDS
+// line 3 "../../../../../PDSPersistence.ump"
+// line 10 "../../../../../pds.ump"
+public class PDS implements Serializable
 {
 
   //------------------------
@@ -16,6 +19,7 @@ public class PDS
   private List<Pizza> pizzas;
   private List<Customer> customers;
   private List<Ingredient> ingredients;
+  private List<Order> orders;
 
   //------------------------
   // CONSTRUCTOR
@@ -26,6 +30,7 @@ public class PDS
     pizzas = new ArrayList<Pizza>();
     customers = new ArrayList<Customer>();
     ingredients = new ArrayList<Ingredient>();
+    orders = new ArrayList<Order>();
   }
 
   //------------------------
@@ -119,6 +124,36 @@ public class PDS
   public int indexOfIngredient(Ingredient aIngredient)
   {
     int index = ingredients.indexOf(aIngredient);
+    return index;
+  }
+  /* Code from template association_GetMany */
+  public Order getOrder(int index)
+  {
+    Order aOrder = orders.get(index);
+    return aOrder;
+  }
+
+  public List<Order> getOrders()
+  {
+    List<Order> newOrders = Collections.unmodifiableList(orders);
+    return newOrders;
+  }
+
+  public int numberOfOrders()
+  {
+    int number = orders.size();
+    return number;
+  }
+
+  public boolean hasOrders()
+  {
+    boolean has = orders.size() > 0;
+    return has;
+  }
+
+  public int indexOfOrder(Order aOrder)
+  {
+    int index = orders.indexOf(aOrder);
     return index;
   }
   /* Code from template association_MinimumNumberOfMethod */
@@ -334,6 +369,78 @@ public class PDS
     }
     return wasAdded;
   }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfOrders()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public Order addOrder(Date aDate, float aTotalPrice, Customer aCustomer)
+  {
+    return new Order(aDate, aTotalPrice, this, aCustomer);
+  }
+
+  public boolean addOrder(Order aOrder)
+  {
+    boolean wasAdded = false;
+    if (orders.contains(aOrder)) { return false; }
+    PDS existingPDS = aOrder.getPDS();
+    boolean isNewPDS = existingPDS != null && !this.equals(existingPDS);
+    if (isNewPDS)
+    {
+      aOrder.setPDS(this);
+    }
+    else
+    {
+      orders.add(aOrder);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeOrder(Order aOrder)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aOrder, as it must always have a pDS
+    if (!this.equals(aOrder.getPDS()))
+    {
+      orders.remove(aOrder);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addOrderAt(Order aOrder, int index)
+  {  
+    boolean wasAdded = false;
+    if(addOrder(aOrder))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfOrders()) { index = numberOfOrders() - 1; }
+      orders.remove(aOrder);
+      orders.add(index, aOrder);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveOrderAt(Order aOrder, int index)
+  {
+    boolean wasAdded = false;
+    if(orders.contains(aOrder))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfOrders()) { index = numberOfOrders() - 1; }
+      orders.remove(aOrder);
+      orders.add(index, aOrder);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addOrderAt(aOrder, index);
+    }
+    return wasAdded;
+  }
 
   public void delete()
   {
@@ -358,6 +465,27 @@ public class PDS
       ingredients.remove(aIngredient);
     }
     
+    while (orders.size() > 0)
+    {
+      Order aOrder = orders.get(orders.size() - 1);
+      aOrder.delete();
+      orders.remove(aOrder);
+    }
+    
   }
 
+  // line 9 "../../../../../PDSPersistence.ump"
+   public void reinitialize(){
+    Order.reinitializeAutouniqueID(this.getOrders());
+    Customer.reinitializeAutouniqueID(this.getCustomers());
+  }
+  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 6 "../../../../../PDSPersistence.ump"
+  private static final long serialVersionUID = -2683593616927798071L ;
+
+  
 }

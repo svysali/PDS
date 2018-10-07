@@ -2,10 +2,20 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse.pds.model;
+import java.io.Serializable;
+import java.util.*;
+import java.sql.Date;
 
-// line 63 "../../../../../pds.ump"
-public class Customer
+// line 50 "../../../../../PDSPersistence.ump"
+// line 66 "../../../../../pds.ump"
+public class Customer implements Serializable
 {
+
+  //------------------------
+  // STATIC VARIABLES
+  //------------------------
+
+  private static int nextId = 1;
 
   //------------------------
   // MEMBER VARIABLES
@@ -17,7 +27,11 @@ public class Customer
   private String emailAddress;
   private String deliveryAddress;
 
+  //Autounique Attributes
+  private int id;
+
   //Customer Associations
+  private List<Order> orders;
   private PDS pDS;
 
   //------------------------
@@ -30,6 +44,8 @@ public class Customer
     phoneNumber = aPhoneNumber;
     emailAddress = aEmailAddress;
     deliveryAddress = aDeliveryAddress;
+    id = nextId++;
+    orders = new ArrayList<Order>();
     boolean didAddPDS = setPDS(aPDS);
     if (!didAddPDS)
     {
@@ -92,10 +108,117 @@ public class Customer
   {
     return deliveryAddress;
   }
+
+  public int getId()
+  {
+    return id;
+  }
+  /* Code from template association_GetMany */
+  public Order getOrder(int index)
+  {
+    Order aOrder = orders.get(index);
+    return aOrder;
+  }
+
+  public List<Order> getOrders()
+  {
+    List<Order> newOrders = Collections.unmodifiableList(orders);
+    return newOrders;
+  }
+
+  public int numberOfOrders()
+  {
+    int number = orders.size();
+    return number;
+  }
+
+  public boolean hasOrders()
+  {
+    boolean has = orders.size() > 0;
+    return has;
+  }
+
+  public int indexOfOrder(Order aOrder)
+  {
+    int index = orders.indexOf(aOrder);
+    return index;
+  }
   /* Code from template association_GetOne */
   public PDS getPDS()
   {
     return pDS;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfOrders()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public Order addOrder(Date aDate, float aTotalPrice, PDS aPDS)
+  {
+    return new Order(aDate, aTotalPrice, aPDS, this);
+  }
+
+  public boolean addOrder(Order aOrder)
+  {
+    boolean wasAdded = false;
+    if (orders.contains(aOrder)) { return false; }
+    Customer existingCustomer = aOrder.getCustomer();
+    boolean isNewCustomer = existingCustomer != null && !this.equals(existingCustomer);
+    if (isNewCustomer)
+    {
+      aOrder.setCustomer(this);
+    }
+    else
+    {
+      orders.add(aOrder);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeOrder(Order aOrder)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aOrder, as it must always have a customer
+    if (!this.equals(aOrder.getCustomer()))
+    {
+      orders.remove(aOrder);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addOrderAt(Order aOrder, int index)
+  {  
+    boolean wasAdded = false;
+    if(addOrder(aOrder))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfOrders()) { index = numberOfOrders() - 1; }
+      orders.remove(aOrder);
+      orders.add(index, aOrder);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveOrderAt(Order aOrder, int index)
+  {
+    boolean wasAdded = false;
+    if(orders.contains(aOrder))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfOrders()) { index = numberOfOrders() - 1; }
+      orders.remove(aOrder);
+      orders.add(index, aOrder);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addOrderAt(aOrder, index);
+    }
+    return wasAdded;
   }
   /* Code from template association_SetOneToMany */
   public boolean setPDS(PDS aPDS)
@@ -119,6 +242,11 @@ public class Customer
 
   public void delete()
   {
+    for(int i=orders.size(); i > 0; i--)
+    {
+      Order aOrder = orders.get(i - 1);
+      aOrder.delete();
+    }
     PDS placeholderPDS = pDS;
     this.pDS = null;
     if(placeholderPDS != null)
@@ -127,14 +255,34 @@ public class Customer
     }
   }
 
+  // line 56 "../../../../../PDSPersistence.ump"
+   public static  void reinitializeAutouniqueID(List<Customer> customers){
+    nextId = 0; 
+    for (Customer customer : customers) {
+      if (customer.getId() > nextId) {
+        nextId = customer.getId();
+      }
+    }
+    nextId++;
+  }
+
 
   public String toString()
   {
     return super.toString() + "["+
+            "id" + ":" + getId()+ "," +
             "name" + ":" + getName()+ "," +
             "phoneNumber" + ":" + getPhoneNumber()+ "," +
             "emailAddress" + ":" + getEmailAddress()+ "," +
             "deliveryAddress" + ":" + getDeliveryAddress()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "pDS = "+(getPDS()!=null?Integer.toHexString(System.identityHashCode(getPDS())):"null");
-  }
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 53 "../../../../../PDSPersistence.ump"
+  private static final long serialVersionUID = 2045406856025012133L ;
+
+  
 }

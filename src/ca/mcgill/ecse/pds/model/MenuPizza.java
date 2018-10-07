@@ -2,10 +2,12 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse.pds.model;
+import java.io.Serializable;
 import java.util.*;
 
-// line 21 "../../../../../pds.ump"
-public class MenuPizza extends Pizza
+// line 66 "../../../../../PDSPersistence.ump"
+// line 24 "../../../../../pds.ump"
+public class MenuPizza extends Pizza implements Serializable
 {
 
   //------------------------
@@ -24,17 +26,17 @@ public class MenuPizza extends Pizza
   public MenuPizza(PDS aPDS, String aName, float aCalorieCount, float aPrice)
   {
     super(aPDS);
-    // line 25 "../../../../../pds.ump"
+    // line 28 "../../../../../pds.ump"
     if (aName == null || aName.length() == 0) {
     	  throw new RuntimeException("The name for a pizza on the Menu cannot be empty.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 31 "../../../../../pds.ump"
+    // line 34 "../../../../../pds.ump"
     if (aCalorieCount <= 0.0f ) {
     	  throw new RuntimeException("The calorie count for a pizza on the Menu cannot be less than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 37 "../../../../../pds.ump"
+    // line 40 "../../../../../pds.ump"
     if (aPrice <= 0.0f ) {
     	  throw new RuntimeException("The price for a pizza on the Menu cannot be less than zero.");
     	}
@@ -51,7 +53,7 @@ public class MenuPizza extends Pizza
   public boolean setName(String aName)
   {
     boolean wasSet = false;
-    // line 25 "../../../../../pds.ump"
+    // line 28 "../../../../../pds.ump"
     if (aName == null || aName.length() == 0) {
     	  throw new RuntimeException("The name for a pizza on the Menu cannot be empty.");
     	}
@@ -64,7 +66,7 @@ public class MenuPizza extends Pizza
   public boolean setCalorieCount(float aCalorieCount)
   {
     boolean wasSet = false;
-    // line 31 "../../../../../pds.ump"
+    // line 34 "../../../../../pds.ump"
     if (aCalorieCount <= 0.0f ) {
     	  throw new RuntimeException("The calorie count for a pizza on the Menu cannot be less than zero.");
     	}
@@ -77,7 +79,7 @@ public class MenuPizza extends Pizza
   public boolean setPrice(float aPrice)
   {
     boolean wasSet = false;
-    // line 37 "../../../../../pds.ump"
+    // line 40 "../../../../../pds.ump"
     if (aPrice <= 0.0f ) {
     	  throw new RuntimeException("The price for a pizza on the Menu cannot be less than zero.");
     	}
@@ -114,5 +116,13 @@ public class MenuPizza extends Pizza
             "name" + ":" + getName()+ "," +
             "calorieCount" + ":" + getCalorieCount()+ "," +
             "price" + ":" + getPrice()+ "]";
-  }
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 69 "../../../../../PDSPersistence.ump"
+  private static final long serialVersionUID = -7403802774454467836L ;
+
+  
 }

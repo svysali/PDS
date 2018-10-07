@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Pizza abstract
  */
-// line 15 "../../../../../pds.ump"
+// line 18 "../../../../../pds.ump"
 public abstract class Pizza
 {
 

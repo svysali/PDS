@@ -1,0 +1,70 @@
+external interface Serializable {}
+
+class PDS {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = -2683593616927798071L;
+  
+  public void reinitialize() {
+    Order.reinitializeAutouniqueID(this.getOrders());
+    Customer.reinitializeAutouniqueID(this.getCustomers());
+  }
+  
+}
+
+class Ingredient {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = 2315072607928790501L; 
+}
+
+class Order {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = 8896099581655989380L;
+  
+  public static void reinitializeAutouniqueID(List<Order> orders) {
+    nextNumber = 0; 
+    for (Order order : orders) {
+      if (order.getNumber() > nextNumber) {
+        nextNumber = order.getNumber();
+      }
+    }
+    nextNumber++;
+  }
+  
+}
+
+class OrderItem {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = 386717977557499839L;
+}
+
+class Customization {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = -3900912597282882073L;
+}
+
+class Customer {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = 2045406856025012133L;
+  
+  public static void reinitializeAutouniqueID(List<Customer> customers) {
+    nextId = 0; 
+    for (Customer customer : customers) {
+      if (customer.getId() > nextId) {
+        nextId = customer.getId();
+      }
+    }
+    nextId++;
+  }  
+}
+
+class MenuPizza {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = -7403802774454467836L;
+}

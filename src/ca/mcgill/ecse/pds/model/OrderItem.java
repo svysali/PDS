@@ -2,10 +2,12 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse.pds.model;
+import java.io.Serializable;
 import java.util.*;
 
-// line 78 "../../../../../pds.ump"
-public class OrderItem
+// line 38 "../../../../../PDSPersistence.ump"
+// line 83 "../../../../../pds.ump"
+public class OrderItem implements Serializable
 {
 
   //------------------------
@@ -223,5 +225,13 @@ public class OrderItem
             "price" + ":" + getPrice()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "pizza = "+(getPizza()!=null?Integer.toHexString(System.identityHashCode(getPizza())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "order = "+(getOrder()!=null?Integer.toHexString(System.identityHashCode(getOrder())):"null");
-  }
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 41 "../../../../../PDSPersistence.ump"
+  private static final long serialVersionUID = 386717977557499839L ;
+
+  
 }

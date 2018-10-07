@@ -2,9 +2,11 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse.pds.model;
+import java.io.Serializable;
 
-// line 48 "../../../../../pds.ump"
-public class Ingredient
+// line 15 "../../../../../PDSPersistence.ump"
+// line 51 "../../../../../pds.ump"
+public class Ingredient implements Serializable
 {
 
   //------------------------
@@ -24,12 +26,12 @@ public class Ingredient
 
   public Ingredient(String aName, float aPrice, PDS aPDS)
   {
-    // line 51 "../../../../../pds.ump"
+    // line 54 "../../../../../pds.ump"
     if (aName == null || aName.length() == 0) {
     	  throw new RuntimeException("The name of an ingredient cannot be empty.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 57 "../../../../../pds.ump"
+    // line 60 "../../../../../pds.ump"
     if (aPrice <= 0.0f) {
     	  throw new RuntimeException("The price cannot be less than zero");
     	}
@@ -50,7 +52,7 @@ public class Ingredient
   public boolean setName(String aName)
   {
     boolean wasSet = false;
-    // line 51 "../../../../../pds.ump"
+    // line 54 "../../../../../pds.ump"
     if (aName == null || aName.length() == 0) {
     	  throw new RuntimeException("The name of an ingredient cannot be empty.");
     	}
@@ -63,7 +65,7 @@ public class Ingredient
   public boolean setPrice(float aPrice)
   {
     boolean wasSet = false;
-    // line 57 "../../../../../pds.ump"
+    // line 60 "../../../../../pds.ump"
     if (aPrice <= 0.0f) {
     	  throw new RuntimeException("The price cannot be less than zero");
     	}
@@ -124,5 +126,13 @@ public class Ingredient
             "name" + ":" + getName()+ "," +
             "price" + ":" + getPrice()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "pDS = "+(getPDS()!=null?Integer.toHexString(System.identityHashCode(getPDS())):"null");
-  }
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 18 "../../../../../PDSPersistence.ump"
+  private static final long serialVersionUID = 2315072607928790501L ;
+
+  
 }

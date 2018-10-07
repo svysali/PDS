@@ -2,11 +2,13 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse.pds.model;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.*;
 
-// line 70 "../../../../../pds.ump"
-public class Order
+// line 21 "../../../../../PDSPersistence.ump"
+// line 75 "../../../../../pds.ump"
+public class Order implements Serializable
 {
 
   //------------------------
@@ -29,18 +31,30 @@ public class Order
 
   //Order Associations
   private List<OrderItem> orderItem;
+  private PDS pDS;
+  private Customer customer;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Order(Date aDate, float aTotalPrice)
+  public Order(Date aDate, float aTotalPrice, PDS aPDS, Customer aCustomer)
   {
     date = aDate;
     totalPrice = aTotalPrice;
     isDelivered = false;
     number = nextNumber++;
     orderItem = new ArrayList<OrderItem>();
+    boolean didAddPDS = setPDS(aPDS);
+    if (!didAddPDS)
+    {
+      throw new RuntimeException("Unable to create order due to pDS");
+    }
+    boolean didAddCustomer = setCustomer(aCustomer);
+    if (!didAddCustomer)
+    {
+      throw new RuntimeException("Unable to create order due to customer");
+    }
   }
 
   //------------------------
@@ -125,6 +139,16 @@ public class Order
     int index = orderItem.indexOf(aOrderItem);
     return index;
   }
+  /* Code from template association_GetOne */
+  public PDS getPDS()
+  {
+    return pDS;
+  }
+  /* Code from template association_GetOne */
+  public Customer getCustomer()
+  {
+    return customer;
+  }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfOrderItem()
   {
@@ -197,6 +221,44 @@ public class Order
     }
     return wasAdded;
   }
+  /* Code from template association_SetOneToMany */
+  public boolean setPDS(PDS aPDS)
+  {
+    boolean wasSet = false;
+    if (aPDS == null)
+    {
+      return wasSet;
+    }
+
+    PDS existingPDS = pDS;
+    pDS = aPDS;
+    if (existingPDS != null && !existingPDS.equals(aPDS))
+    {
+      existingPDS.removeOrder(this);
+    }
+    pDS.addOrder(this);
+    wasSet = true;
+    return wasSet;
+  }
+  /* Code from template association_SetOneToMany */
+  public boolean setCustomer(Customer aCustomer)
+  {
+    boolean wasSet = false;
+    if (aCustomer == null)
+    {
+      return wasSet;
+    }
+
+    Customer existingCustomer = customer;
+    customer = aCustomer;
+    if (existingCustomer != null && !existingCustomer.equals(aCustomer))
+    {
+      existingCustomer.removeOrder(this);
+    }
+    customer.addOrder(this);
+    wasSet = true;
+    return wasSet;
+  }
 
   public void delete()
   {
@@ -207,6 +269,29 @@ public class Order
       orderItem.remove(aOrderItem);
     }
     
+    PDS placeholderPDS = pDS;
+    this.pDS = null;
+    if(placeholderPDS != null)
+    {
+      placeholderPDS.removeOrder(this);
+    }
+    Customer placeholderCustomer = customer;
+    this.customer = null;
+    if(placeholderCustomer != null)
+    {
+      placeholderCustomer.removeOrder(this);
+    }
+  }
+
+  // line 27 "../../../../../PDSPersistence.ump"
+   public static  void reinitializeAutouniqueID(List<Order> orders){
+    nextNumber = 0; 
+    for (Order order : orders) {
+      if (order.getNumber() > nextNumber) {
+        nextNumber = order.getNumber();
+      }
+    }
+    nextNumber++;
   }
 
 
@@ -216,6 +301,16 @@ public class Order
             "number" + ":" + getNumber()+ "," +
             "totalPrice" + ":" + getTotalPrice()+ "," +
             "isDelivered" + ":" + getIsDelivered()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "date" + "=" + (getDate() != null ? !getDate().equals(this)  ? getDate().toString().replaceAll("  ","    ") : "this" : "null");
-  }
+            "  " + "date" + "=" + (getDate() != null ? !getDate().equals(this)  ? getDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "pDS = "+(getPDS()!=null?Integer.toHexString(System.identityHashCode(getPDS())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "customer = "+(getCustomer()!=null?Integer.toHexString(System.identityHashCode(getCustomer())):"null");
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 24 "../../../../../PDSPersistence.ump"
+  private static final long serialVersionUID = 8896099581655989380L ;
+
+  
 }
