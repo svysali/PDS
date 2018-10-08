@@ -33,6 +33,7 @@ public class PdsApplication {
 			System.out.println("Ingredient: " + ingredient.getName() + " / Price: " + ingredient.getPrice());
 		}
 		System.out.println("========================");
+		System.out.println("Number of Customers: " );
 	}
 	
 	public static PDS getPDS() {
