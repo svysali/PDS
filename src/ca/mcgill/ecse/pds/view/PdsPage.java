@@ -29,6 +29,7 @@ import javax.swing.JComboBox;
 import java.awt.Font;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import java.awt.CardLayout;
 
 public class PdsPage extends JFrame {
 
@@ -52,7 +53,7 @@ public class PdsPage extends JFrame {
 	private JLabel ingredientErrorMessage;
 	
 	//Menu Pizza Panel Elements
-	private JPanel MenuPizzaPanel;
+	private JPanel menuPizzaPanel;
 	
 	// data elements
 	private String error = null;
@@ -61,6 +62,7 @@ public class PdsPage extends JFrame {
 	private Integer selectedRemoveIngredient = -1;
 	private Integer selectedUpdateIngredient = -1;
 	private String overviewIngredientColumnNames[] = {"Name", "Price"};
+	private JTable table;
 		
 	/**
 	 * Create the frame.
@@ -71,7 +73,7 @@ public class PdsPage extends JFrame {
 	private void initComponents() {
 		setTitle("Mamma Mia Pizza delivery");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(200, 200, 550, 600);
+		setBounds(200, 200, 550, 400);
 		contentPanel = new JPanel();
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPanel);
@@ -90,8 +92,107 @@ public class PdsPage extends JFrame {
 		tabbedPanel.addTab("Ingredients", null, ingredientsPanel, null);
 		
 		//Menu Pizza Tab
-		MenuPizzaPanel = new JPanel();
-    	tabbedPanel.addTab("Menu Pizzas", null, MenuPizzaPanel, null);
+		menuPizzaPanel = new JPanel();
+    	tabbedPanel.addTab("Menu Pizzas", null, menuPizzaPanel, null);
+    	menuPizzaPanel.setLayout(new CardLayout(0, 0));
+    	
+    	JPanel menuPizzaInitialPanel = new JPanel();
+    	menuPizzaPanel.add(menuPizzaInitialPanel, "name_6903914557869");
+    	
+    	JLabel lblAvailablePizzas = new JLabel("Available Pizzas");
+    	
+    	JScrollPane scrollPane = new JScrollPane();
+    	
+    	JLabel menuPizzaErrorMessage = new JLabel("");
+    	
+    	JButton btnLaunchNewMenuPizzaPage = new JButton("New menu Pizza...");
+    	
+    	JButton btnLaunchEditPizzaPage = new JButton("Edit Menu Pizza ...");
+    	
+    	JLabel lblOtherActions = new JLabel("Other Actions");
+    	
+    	JLabel lblDeletePizza = new JLabel("Delete Pizza");
+    	
+    	JComboBox comboBox = new JComboBox();
+    	
+    	JLabel lblSelect_1 = new JLabel("Select");
+    	
+    	JButton btnDelete = new JButton("Delete");
+    	GroupLayout gl_menuPizzaInitialPanel = new GroupLayout(menuPizzaInitialPanel);
+    	gl_menuPizzaInitialPanel.setHorizontalGroup(
+    		gl_menuPizzaInitialPanel.createParallelGroup(Alignment.LEADING)
+    			.addGroup(gl_menuPizzaInitialPanel.createSequentialGroup()
+    				.addGroup(gl_menuPizzaInitialPanel.createParallelGroup(Alignment.LEADING)
+    					.addGroup(gl_menuPizzaInitialPanel.createSequentialGroup()
+    						.addGap(72)
+    						.addComponent(lblAvailablePizzas)
+    						.addGap(194)
+    						.addComponent(lblOtherActions))
+    					.addGroup(gl_menuPizzaInitialPanel.createSequentialGroup()
+    						.addGap(15)
+    						.addGroup(gl_menuPizzaInitialPanel.createParallelGroup(Alignment.LEADING)
+    							.addGroup(gl_menuPizzaInitialPanel.createSequentialGroup()
+    								.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 265, GroupLayout.PREFERRED_SIZE)
+    								.addGroup(gl_menuPizzaInitialPanel.createParallelGroup(Alignment.LEADING, false)
+    									.addGroup(Alignment.TRAILING, gl_menuPizzaInitialPanel.createSequentialGroup()
+    										.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+    										.addGroup(gl_menuPizzaInitialPanel.createParallelGroup(Alignment.LEADING)
+    											.addComponent(btnLaunchEditPizzaPage)
+    											.addComponent(btnLaunchNewMenuPizzaPage))
+    										.addGap(32))
+    									.addGroup(Alignment.TRAILING, gl_menuPizzaInitialPanel.createSequentialGroup()
+    										.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+    										.addComponent(lblDeletePizza)
+    										.addGap(68))
+    									.addGroup(gl_menuPizzaInitialPanel.createSequentialGroup()
+    										.addGap(18)
+    										.addGroup(gl_menuPizzaInitialPanel.createParallelGroup(Alignment.TRAILING)
+    											.addComponent(btnDelete)
+    											.addGroup(gl_menuPizzaInitialPanel.createSequentialGroup()
+    												.addComponent(lblSelect_1)
+    												.addPreferredGap(ComponentPlacement.RELATED)
+    												.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)))
+    										.addGap(41))))
+    							.addComponent(menuPizzaErrorMessage))))
+    				.addContainerGap(206, Short.MAX_VALUE))
+    	);
+    	gl_menuPizzaInitialPanel.setVerticalGroup(
+    		gl_menuPizzaInitialPanel.createParallelGroup(Alignment.LEADING)
+    			.addGroup(gl_menuPizzaInitialPanel.createSequentialGroup()
+    				.addGap(14)
+    				.addGroup(gl_menuPizzaInitialPanel.createParallelGroup(Alignment.TRAILING)
+    					.addComponent(lblAvailablePizzas)
+    					.addComponent(lblOtherActions))
+    				.addPreferredGap(ComponentPlacement.RELATED)
+    				.addGroup(gl_menuPizzaInitialPanel.createParallelGroup(Alignment.LEADING)
+    					.addGroup(gl_menuPizzaInitialPanel.createParallelGroup(Alignment.TRAILING)
+    						.addComponent(menuPizzaErrorMessage)
+    						.addGroup(Alignment.LEADING, gl_menuPizzaInitialPanel.createSequentialGroup()
+    							.addGap(6)
+    							.addComponent(btnLaunchNewMenuPizzaPage)
+    							.addPreferredGap(ComponentPlacement.RELATED)
+    							.addComponent(btnLaunchEditPizzaPage)
+    							.addGap(28)
+    							.addComponent(lblDeletePizza)
+    							.addGap(18)
+    							.addGroup(gl_menuPizzaInitialPanel.createParallelGroup(Alignment.BASELINE)
+    								.addComponent(lblSelect_1)
+    								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+    							.addPreferredGap(ComponentPlacement.RELATED)
+    							.addComponent(btnDelete)))
+    					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 221, GroupLayout.PREFERRED_SIZE))
+    				.addContainerGap(65, Short.MAX_VALUE))
+    	);
+    	
+    	table = new JTable();
+    	scrollPane.setViewportView(table);
+    	menuPizzaInitialPanel.setLayout(gl_menuPizzaInitialPanel);
+    	
+    	JPanel customersPanel = new JPanel();
+    	tabbedPanel.addTab("Customers", null, customersPanel, null);
+    	
+    	JPanel ordersPanel = new JPanel();
+    	tabbedPanel.addTab("Orders", null, ordersPanel, null);
 		
     	//Should we dynamically init on tab click ?
     	initIngredientTab();
@@ -184,8 +285,8 @@ public class PdsPage extends JFrame {
 										.addGap(18)
 										.addComponent(cBRemoveIngredient, 0, 200, Short.MAX_VALUE))
 									.addComponent(ingredientErrorMessage)))))
-					.addGap(58)
-					.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.TRAILING)
+					.addPreferredGap(ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+					.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.TRAILING, false)
 						.addGroup(gl_ingredientsPanel.createSequentialGroup()
 							.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.TRAILING)
 								.addGroup(gl_ingredientsPanel.createSequentialGroup()
@@ -199,29 +300,26 @@ public class PdsPage extends JFrame {
 											.addComponent(fldNewIngredient, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 										.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.TRAILING)
 											.addComponent(btnAddIngredient)
-											.addGroup(gl_ingredientsPanel.createSequentialGroup()
-												.addComponent(lblNewIngredientPrice)
-												.addPreferredGap(ComponentPlacement.UNRELATED)
-												.addComponent(fldNewIngredientPrice, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-										.addGroup(gl_ingredientsPanel.createSequentialGroup()
-											.addPreferredGap(ComponentPlacement.RELATED)
 											.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.LEADING)
-												.addGroup(gl_ingredientsPanel.createSequentialGroup()
-													.addComponent(lblNewPrice)
-													.addPreferredGap(ComponentPlacement.UNRELATED)
-													.addComponent(fldUpdatedPrice, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 												.addGroup(gl_ingredientsPanel.createSequentialGroup()
 													.addComponent(lblSelect)
 													.addPreferredGap(ComponentPlacement.RELATED)
-													.addComponent(cBUpdateIngredient, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)))))
+													.addComponent(cBUpdateIngredient, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE))
+												.addGroup(gl_ingredientsPanel.createSequentialGroup()
+													.addComponent(lblNewIngredientPrice)
+													.addPreferredGap(ComponentPlacement.UNRELATED)
+													.addComponent(fldNewIngredientPrice, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+												.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.TRAILING)
+													.addComponent(btnUpdateIngredient, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+													.addGroup(gl_ingredientsPanel.createSequentialGroup()
+														.addComponent(lblNewPrice)
+														.addGap(18)
+														.addComponent(fldUpdatedPrice, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))))
 									.addPreferredGap(ComponentPlacement.RELATED)))
 							.addGap(9))
 						.addGroup(gl_ingredientsPanel.createSequentialGroup()
 							.addComponent(lblUpdatePrice)
-							.addGap(40))
-						.addGroup(gl_ingredientsPanel.createSequentialGroup()
-							.addComponent(btnUpdateIngredient, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())))
+							.addGap(39))))
 		);
 		gl_ingredientsPanel.setVerticalGroup(
 			gl_ingredientsPanel.createParallelGroup(Alignment.LEADING)
@@ -240,18 +338,21 @@ public class PdsPage extends JFrame {
 							.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblNewIngredientPrice)
 								.addComponent(fldNewIngredientPrice, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnAddIngredient)
-							.addPreferredGap(ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
-							.addComponent(lblUpdatePrice)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblSelect)
-								.addComponent(cBUpdateIngredient, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblNewPrice)
-								.addComponent(fldUpdatedPrice, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_ingredientsPanel.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnAddIngredient)
+									.addGap(18)
+									.addComponent(lblUpdatePrice))
+								.addGroup(gl_ingredientsPanel.createSequentialGroup()
+									.addGap(71)
+									.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblSelect)
+										.addComponent(cBUpdateIngredient, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblNewPrice)
+										.addComponent(fldUpdatedPrice, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnUpdateIngredient)
 							.addContainerGap())
@@ -265,7 +366,7 @@ public class PdsPage extends JFrame {
 								.addComponent(cBRemoveIngredient, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnRemoveIngredient)
-							.addPreferredGap(ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
 							.addComponent(ingredientErrorMessage)
 							.addGap(31))))
 		);
