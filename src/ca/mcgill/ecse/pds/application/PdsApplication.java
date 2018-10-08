@@ -19,12 +19,6 @@ public class PdsApplication {
 		// Step 1
 		PDS pds = getPDS();
 		printPdsStatistics(pds);
-		
-		//pds.addIngredient("pepperoni",1.0f);
-		//pds.addIngredient("mushrooms",1.0f);
-		
-		save();
-		printPdsStatistics(pds);
 			
 	}
 	

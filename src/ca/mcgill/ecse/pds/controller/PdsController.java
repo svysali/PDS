@@ -40,6 +40,45 @@ public class PdsController {
 		}
 	}
 	
+	public static void updateIngredient(String name, float price) throws InvalidInputException {
+		String error = "";
+		PDS pds = PdsApplication.getPDS();
+		Ingredient foundIngredient = null;
+		for (Ingredient ingredient : pds.getIngredients()) {
+			if (ingredient.getName() == name) {
+				foundIngredient = ingredient;
+				break;
+			}
+		}
+		if(foundIngredient == null) {
+			error = error + "Could not find Ingredient:" + name + "\n";	
+		}
+		if(price <= 0) {
+			error = error + "Price must be greater than zero. ";
+		}
+		
+		if (error.length() > 0) {
+			throw new InvalidInputException(error.trim());
+		}
+		foundIngredient.setPrice(price);
+		try {
+			PdsApplication.save();
+		}
+		catch (RuntimeException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
+	}
+	
+	public static void deleteIngredient(Ingredient ingredient) throws InvalidInputException {
+		ingredient.delete();
+		try {
+			PdsApplication.save();
+		}
+		catch (RuntimeException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
+	}
+	
 	public static List<Ingredient> getIngredients() {
 		return PdsApplication.getPDS().getIngredients();
 	}

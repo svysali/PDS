@@ -41,14 +41,15 @@ public class PdsPage extends JFrame {
 	private GroupLayout gl_contentPanel;
 	
 	//Ingredient Panel Elements
-	private JPanel IngredientsPanel;
+	private JPanel ingredientsPanel;
 	private JScrollPane ingredientOverviewScrollPane;
 	private JTextField fldNewIngredient;
 	private JTextField fldNewIngredientPrice;
 	private JTextField fldUpdatedPrice;
 	private JComboBox<String> cBRemoveIngredient;
 	private JComboBox<String> cBUpdateIngredient;
-	private JTable IngredientTable;
+	private JTable ingredientTable;
+	private JLabel ingredientErrorMessage;
 	
 	//Menu Pizza Panel Elements
 	private JPanel MenuPizzaPanel;
@@ -60,10 +61,7 @@ public class PdsPage extends JFrame {
 	private Integer selectedRemoveIngredient = -1;
 	private Integer selectedUpdateIngredient = -1;
 	private String overviewIngredientColumnNames[] = {"Name", "Price"};
-	
-	//UI elements
-	private JLabel errorMessage;
-	
+		
 	/**
 	 * Create the frame.
 	 */
@@ -73,7 +71,7 @@ public class PdsPage extends JFrame {
 	private void initComponents() {
 		setTitle("Mamma Mia Pizza delivery");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(200, 200, 550, 400);
+		setBounds(200, 200, 550, 600);
 		contentPanel = new JPanel();
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPanel);
@@ -88,34 +86,28 @@ public class PdsPage extends JFrame {
 				.addComponent(tabbedPanel, GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
 		);
 		//Ingredient Tab
-		IngredientsPanel = new JPanel();
-		tabbedPanel.addTab("Ingredients", null, IngredientsPanel, null);
+		ingredientsPanel = new JPanel();
+		tabbedPanel.addTab("Ingredients", null, ingredientsPanel, null);
 		
 		//Menu Pizza Tab
 		MenuPizzaPanel = new JPanel();
     	tabbedPanel.addTab("Menu Pizzas", null, MenuPizzaPanel, null);
 		
     	//Should we dynamically init on tab click ?
-    	errorMessage = new JLabel();
     	initIngredientTab();
     	
 		contentPanel.setLayout(gl_contentPanel);
 	}
 	private void initIngredientTab() {
-		JLabel lblAvailable = new JLabel("Available ");
 		
 		JLabel lblNewIngredient = new JLabel("New Ingredient");
 		lblNewIngredient.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-		
 		JLabel lblNewIngredientLabel = new JLabel("Name");
 		lblNewIngredientLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-		
 		JLabel lblNewIngredientPrice = new JLabel("Price");
 		lblNewIngredientPrice.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-		
 		fldNewIngredient = new JTextField();
 		fldNewIngredient.setColumns(10);
-		
 		fldNewIngredientPrice = new JTextField();
 		fldNewIngredientPrice.setColumns(10);
 		
@@ -123,111 +115,129 @@ public class PdsPage extends JFrame {
 		btnAddIngredient.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
 		btnAddIngredient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
+				addIngredientButtonActionPerformed(e);
 			}
 		});
 		
 		JLabel lblUpdatePrice = new JLabel("Update Price");
 		lblUpdatePrice.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-		
 		JLabel lblSelect = new JLabel("Select");
 		lblSelect.setFont(new Font("Lucida Grande", Font.PLAIN, 12));
-		
 		cBUpdateIngredient = new JComboBox();
-		
-		JButton btnUpdate = new JButton("Update");
-		
+		cBUpdateIngredient.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		        JComboBox<String> cb = (JComboBox<String>) evt.getSource();
+		        selectedUpdateIngredient = cb.getSelectedIndex();
+			}
+		});
 		JLabel lblNewPrice = new JLabel("Price");
-		
 		fldUpdatedPrice = new JTextField();
 		fldUpdatedPrice.setColumns(10);
+		JButton btnUpdateIngredient = new JButton("Update");
+		btnUpdateIngredient.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateIngredientButtonActionPerformed(e);
+			}
+		});
 		
 		JLabel lblRemoveIngredient = new JLabel("Remove Ingredient");
-		
 		JLabel lblRemoveSelect = new JLabel("Select");
-		
 		cBRemoveIngredient = new JComboBox();
-		
+		cBRemoveIngredient.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		        JComboBox<String> cb = (JComboBox<String>) evt.getSource();
+		        selectedRemoveIngredient = cb.getSelectedIndex();
+			}
+		});
 		JButton btnRemoveIngredient = new JButton("Remove");
+		btnRemoveIngredient.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				removeIngredientButtonActionPerformed(e);
+			}
+		});
 		
+		JLabel lblAvailable = new JLabel("Available Ingredients ");
 		ingredientOverviewScrollPane = new JScrollPane();
-		GroupLayout gl_IngredientsPanel = new GroupLayout(IngredientsPanel);
-		gl_IngredientsPanel.setHorizontalGroup(
-			gl_IngredientsPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_IngredientsPanel.createSequentialGroup()
-					.addGroup(gl_IngredientsPanel.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_IngredientsPanel.createSequentialGroup()
+		ingredientErrorMessage = new JLabel("");
+		
+		GroupLayout gl_ingredientsPanel = new GroupLayout(ingredientsPanel);
+		gl_ingredientsPanel.setHorizontalGroup(
+			gl_ingredientsPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_ingredientsPanel.createSequentialGroup()
+					.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_ingredientsPanel.createSequentialGroup()
 							.addContainerGap()
 							.addComponent(btnRemoveIngredient))
-						.addGroup(gl_IngredientsPanel.createParallelGroup(Alignment.LEADING)
-							.addGroup(gl_IngredientsPanel.createSequentialGroup()
+						.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.LEADING)
+							.addGroup(gl_ingredientsPanel.createSequentialGroup()
 								.addGap(44)
 								.addComponent(lblAvailable))
-							.addGroup(gl_IngredientsPanel.createSequentialGroup()
+							.addGroup(gl_ingredientsPanel.createSequentialGroup()
 								.addGap(41)
 								.addComponent(lblRemoveIngredient))
-							.addGroup(gl_IngredientsPanel.createSequentialGroup()
+							.addGroup(gl_ingredientsPanel.createSequentialGroup()
 								.addGap(17)
-								.addGroup(gl_IngredientsPanel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.LEADING)
 									.addComponent(ingredientOverviewScrollPane, GroupLayout.PREFERRED_SIZE, 255, GroupLayout.PREFERRED_SIZE)
-									.addGroup(gl_IngredientsPanel.createSequentialGroup()
+									.addGroup(gl_ingredientsPanel.createSequentialGroup()
 										.addComponent(lblRemoveSelect)
 										.addGap(18)
-										.addComponent(cBRemoveIngredient, 0, 96, Short.MAX_VALUE))))))
+										.addComponent(cBRemoveIngredient, 0, 200, Short.MAX_VALUE))
+									.addComponent(ingredientErrorMessage)))))
 					.addGap(58)
-					.addGroup(gl_IngredientsPanel.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_IngredientsPanel.createSequentialGroup()
-							.addGroup(gl_IngredientsPanel.createParallelGroup(Alignment.TRAILING)
-								.addGroup(gl_IngredientsPanel.createSequentialGroup()
+					.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_ingredientsPanel.createSequentialGroup()
+							.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_ingredientsPanel.createSequentialGroup()
 									.addComponent(lblNewIngredient)
 									.addGap(35))
-								.addGroup(gl_IngredientsPanel.createSequentialGroup()
-									.addGroup(gl_IngredientsPanel.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_IngredientsPanel.createSequentialGroup()
+								.addGroup(gl_ingredientsPanel.createSequentialGroup()
+									.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_ingredientsPanel.createSequentialGroup()
 											.addComponent(lblNewIngredientLabel)
 											.addPreferredGap(ComponentPlacement.RELATED)
 											.addComponent(fldNewIngredient, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_IngredientsPanel.createParallelGroup(Alignment.TRAILING)
+										.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.TRAILING)
 											.addComponent(btnAddIngredient)
-											.addGroup(gl_IngredientsPanel.createSequentialGroup()
+											.addGroup(gl_ingredientsPanel.createSequentialGroup()
 												.addComponent(lblNewIngredientPrice)
 												.addPreferredGap(ComponentPlacement.UNRELATED)
 												.addComponent(fldNewIngredientPrice, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-										.addGroup(gl_IngredientsPanel.createSequentialGroup()
+										.addGroup(gl_ingredientsPanel.createSequentialGroup()
 											.addPreferredGap(ComponentPlacement.RELATED)
-											.addGroup(gl_IngredientsPanel.createParallelGroup(Alignment.LEADING)
-												.addGroup(gl_IngredientsPanel.createSequentialGroup()
+											.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_ingredientsPanel.createSequentialGroup()
 													.addComponent(lblNewPrice)
 													.addPreferredGap(ComponentPlacement.UNRELATED)
 													.addComponent(fldUpdatedPrice, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-												.addGroup(gl_IngredientsPanel.createSequentialGroup()
+												.addGroup(gl_ingredientsPanel.createSequentialGroup()
 													.addComponent(lblSelect)
 													.addPreferredGap(ComponentPlacement.RELATED)
 													.addComponent(cBUpdateIngredient, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)))))
 									.addPreferredGap(ComponentPlacement.RELATED)))
 							.addGap(9))
-						.addGroup(gl_IngredientsPanel.createSequentialGroup()
+						.addGroup(gl_ingredientsPanel.createSequentialGroup()
 							.addComponent(lblUpdatePrice)
 							.addGap(40))
-						.addGroup(gl_IngredientsPanel.createSequentialGroup()
-							.addComponent(btnUpdate, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_ingredientsPanel.createSequentialGroup()
+							.addComponent(btnUpdateIngredient, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap())))
 		);
-		gl_IngredientsPanel.setVerticalGroup(
-			gl_IngredientsPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_IngredientsPanel.createSequentialGroup()
+		gl_ingredientsPanel.setVerticalGroup(
+			gl_ingredientsPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_ingredientsPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_IngredientsPanel.createParallelGroup(Alignment.BASELINE)
+					.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblAvailable)
 						.addComponent(lblNewIngredient))
 					.addGap(6)
-					.addGroup(gl_IngredientsPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_IngredientsPanel.createSequentialGroup()
-							.addGroup(gl_IngredientsPanel.createParallelGroup(Alignment.BASELINE)
+					.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_ingredientsPanel.createSequentialGroup()
+							.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblNewIngredientLabel)
 								.addComponent(fldNewIngredient, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_IngredientsPanel.createParallelGroup(Alignment.BASELINE)
+							.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblNewIngredientPrice)
 								.addComponent(fldNewIngredientPrice, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)
@@ -235,37 +245,40 @@ public class PdsPage extends JFrame {
 							.addPreferredGap(ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
 							.addComponent(lblUpdatePrice)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_IngredientsPanel.createParallelGroup(Alignment.BASELINE)
+							.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblSelect)
 								.addComponent(cBUpdateIngredient, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_IngredientsPanel.createParallelGroup(Alignment.BASELINE)
+							.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblNewPrice)
 								.addComponent(fldUpdatedPrice, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnUpdate))
-						.addGroup(gl_IngredientsPanel.createSequentialGroup()
+							.addComponent(btnUpdateIngredient)
+							.addContainerGap())
+						.addGroup(gl_ingredientsPanel.createSequentialGroup()
 							.addComponent(ingredientOverviewScrollPane, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
 							.addComponent(lblRemoveIngredient)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_IngredientsPanel.createParallelGroup(Alignment.BASELINE)
+							.addGroup(gl_ingredientsPanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblRemoveSelect)
 								.addComponent(cBRemoveIngredient, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnRemoveIngredient)))
-					.addContainerGap())
+							.addComponent(btnRemoveIngredient)
+							.addPreferredGap(ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+							.addComponent(ingredientErrorMessage)
+							.addGap(31))))
 		);
 		
-		IngredientTable = new JTable();
-		ingredientOverviewScrollPane.setViewportView(IngredientTable);
-		IngredientsPanel.setLayout(gl_IngredientsPanel);
+		ingredientTable = new JTable();
+		ingredientOverviewScrollPane.setViewportView(ingredientTable);
+		ingredientsPanel.setLayout(gl_ingredientsPanel);
 		refreshIngredientData();
 	}
 	
 	private void refreshIngredientData() {
 		// error
-		errorMessage.setText(error);
+		ingredientErrorMessage.setText(error);
 		if (error == null || error.length() == 0) {
 			
 			// Update all text fields
@@ -292,13 +305,15 @@ public class PdsPage extends JFrame {
 			// Ingredient Overview
 			DefaultTableModel ingredientOverviewDtm = new DefaultTableModel(0, 0);
 			ingredientOverviewDtm.setColumnIdentifiers(overviewIngredientColumnNames);
-			IngredientTable.setModel(ingredientOverviewDtm);
+			ingredientTable.setModel(ingredientOverviewDtm);
 			for (Ingredient ingredient : PdsController.getIngredients()) {
 				Object[] obj = {ingredient.getName(), ingredient.getPrice()};
 				ingredientOverviewDtm.addRow(obj);
 			}
-			Dimension d = IngredientTable.getPreferredSize();
+			Dimension d = ingredientTable.getPreferredSize();
 			ingredientOverviewScrollPane.setPreferredSize(new Dimension(d.width, 100));
+			
+			pack();
 		}
 	}	
     private void initMenuPizzaTab() {
@@ -307,15 +322,63 @@ public class PdsPage extends JFrame {
 
     private void addIngredientButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		// clear error message
-		error = null;
-		// call the controller
-		try {
-			PdsController.createIngredient(fldNewIngredient.getText(), Float.parseFloat(fldNewIngredientPrice.getText()));
-		} catch (InvalidInputException e) {
-			error = e.getMessage();
-			System.out.println("Error: " + error);
+		error = "";
+		if (error.length() == 0) {
+			try {
+				PdsController.createIngredient(fldNewIngredient.getText(), convertPriceToFloat(fldNewIngredientPrice.getText()));
+			} catch (InvalidInputException e) {
+				error = e.getMessage();
+			}
+		}	
+		// update visuals
+		refreshIngredientData();
+	}
+    
+    private void removeIngredientButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		// clear error message and basic input validation
+		error = "";
+		if (selectedRemoveIngredient < 0)
+			error = "An Ingredient needs to be selected for deletion!";
+		
+		if (error.length() == 0) {
+			// call the controller
+			try {
+				PdsController.deleteIngredient(ingredients.get(selectedRemoveIngredient));
+			} catch (InvalidInputException e) {
+				error = e.getMessage();
+			}
 		}
 		// update visuals
 		refreshIngredientData();
 	}
+    
+    private void updateIngredientButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	error = "";
+    	if (selectedUpdateIngredient < 0)
+			error = "An Ingredient needs to be selected for update!";
+    	if (error.length() == 0) {
+			// call the controller
+			Ingredient selectedIngredient = ingredients.get(selectedUpdateIngredient);
+    		float newPrice = convertPriceToFloat(fldUpdatedPrice.getText());
+			try {
+				PdsController.updateIngredient(selectedIngredient.getName(),newPrice);
+			} catch (InvalidInputException e) {
+				error = e.getMessage();
+			}
+		}
+		// update visuals
+		refreshIngredientData();
+    }
+    
+    private float convertPriceToFloat(String price) {
+    	float returnVal = 0;
+		// call the controller
+		try {
+			returnVal = Float.parseFloat(price);
+		}
+		catch (NumberFormatException e) {
+			returnVal = 0;
+		}
+		return returnVal;
+    }
 }
