@@ -66,20 +66,9 @@ class Ingredient {
 class Customer {
   autounique id;
   String name;
-  before constructor, setName {
-    if (aName == null || aName.length() == 0) {
-	  throw new RuntimeException("The name of a customer cannot be empty.");
-	}
-  }
   String phoneNumber;
   String emailAddress;
   String deliveryAddress;
-  before constructor, setDeliveryAddress {
-    if (aDeliveryAddress == null || aDeliveryAddress.length() == 0) {
-	  throw new RuntimeException("The address of a customer cannot be empty.");
-		}
-  	}
-  }
   1 -- * Order orders;
 }
 
