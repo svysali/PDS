@@ -2,6 +2,7 @@ package ca.mcgill.ecse.pds.application;
 
 import ca.mcgill.ecse.pds.model.*;
 import ca.mcgill.ecse.pds.persistence.PersistenceObjectStream;
+import ca.mcgill.ecse.pds.view.PdsPage;
 
 public class PdsApplication {
 	private static PDS pds;
@@ -9,18 +10,22 @@ public class PdsApplication {
 	private static int counter = 1;
 	public static void main(String[] args) {
 		
-		//TO DO:IMPLEMENT UI
+		java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new PdsPage().setVisible(true);
+            }
+        });
 		
 		// Step 1
 		PDS pds = getPDS();
 		printPdsStatistics(pds);
 		
-		// Step 2
-		pds.addIngredient("pepperoni",1.0f);
+		//pds.addIngredient("pepperoni",1.0f);
+		//pds.addIngredient("mushrooms",1.0f);
+		
 		save();
 		printPdsStatistics(pds);
-		
-		
+			
 	}
 	
 	public static int increaseCounter() {
