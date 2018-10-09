@@ -30,6 +30,8 @@ import java.awt.Font;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.CardLayout;
+import java.awt.GridLayout;
+import javax.swing.JTextPane;
 
 public class PdsPage extends JFrame {
 
@@ -63,6 +65,14 @@ public class PdsPage extends JFrame {
 	private Integer selectedUpdateIngredient = -1;
 	private String overviewIngredientColumnNames[] = {"Name", "Price"};
 	private JTable table;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
+	private JTable table_1;
+	private JTextField textField_4;
+	private JTextField textField_5;
+	private JTextField textField_6;
 		
 	/**
 	 * Create the frame.
@@ -189,11 +199,122 @@ public class PdsPage extends JFrame {
     	scrollPane.setViewportView(table);
     	menuPizzaInitialPanel.setLayout(gl_menuPizzaInitialPanel);
     	
-    	JPanel customersPanel = new JPanel();
-    	tabbedPanel.addTab("Customers", null, customersPanel, null);
-    	
     	JPanel ordersPanel = new JPanel();
     	tabbedPanel.addTab("Orders", null, ordersPanel, null);
+    	
+    	JPanel customersPanel = new JPanel();
+    	tabbedPanel.addTab("Customers", null, customersPanel, null);
+    	customersPanel.setLayout(null);
+    	
+    	JLabel lblExistingCustomers = new JLabel("Existing Customers");
+    	lblExistingCustomers.setBounds(16, 6, 147, 16);
+    	customersPanel.add(lblExistingCustomers);
+    	
+    	JLabel lblNewCustomer = new JLabel("New Customer");
+    	lblNewCustomer.setBounds(372, 6, 129, 16);
+    	customersPanel.add(lblNewCustomer);
+    	
+    	textField = new JTextField();
+    	textField.setBounds(360, 25, 130, 26);
+    	customersPanel.add(textField);
+    	textField.setColumns(10);
+    	
+    	textField_1 = new JTextField();
+    	textField_1.setBounds(360, 50, 130, 26);
+    	customersPanel.add(textField_1);
+    	textField_1.setColumns(10);
+    	
+    	textField_2 = new JTextField();
+    	textField_2.setBounds(360, 77, 130, 26);
+    	customersPanel.add(textField_2);
+    	textField_2.setColumns(10);
+    	
+    	textField_3 = new JTextField();
+    	textField_3.setBounds(360, 104, 130, 45);
+    	customersPanel.add(textField_3);
+    	textField_3.setColumns(10);
+    	
+    	JButton btnAdd = new JButton("Add");
+    	btnAdd.setBounds(372, 148, 117, 29);
+    	customersPanel.add(btnAdd);
+    	
+    	JLabel lblUpdateCustomer = new JLabel("Update Customer");
+    	lblUpdateCustomer.setBounds(16, 166, 125, 16);
+    	customersPanel.add(lblUpdateCustomer);
+    	
+    	JScrollPane scrollPane_1 = new JScrollPane();
+    	scrollPane_1.setBounds(16, 29, 255, 125);
+    	customersPanel.add(scrollPane_1);
+    	
+    	table_1 = new JTable();
+    	scrollPane_1.setViewportView(table_1);
+    	
+    	JLabel lblDeleteCustomer = new JLabel("Delete Customer");
+    	lblDeleteCustomer.setBounds(372, 189, 118, 16);
+    	customersPanel.add(lblDeleteCustomer);
+    	
+    	JLabel lblName = new JLabel("Name");
+    	lblName.setBounds(307, 30, 61, 16);
+    	customersPanel.add(lblName);
+    	
+    	JLabel lblPhone = new JLabel("Phone #");
+    	lblPhone.setBounds(307, 55, 61, 16);
+    	customersPanel.add(lblPhone);
+    	
+    	JLabel lblEmail = new JLabel("Email");
+    	lblEmail.setBounds(307, 82, 61, 16);
+    	customersPanel.add(lblEmail);
+    	
+    	JLabel lblAddress = new JLabel("Address");
+    	lblAddress.setBounds(307, 106, 61, 16);
+    	customersPanel.add(lblAddress);
+    	
+    	JButton btnUpdate = new JButton("Update");
+    	btnUpdate.setBounds(154, 287, 117, 29);
+    	customersPanel.add(btnUpdate);
+    	
+    	JButton btnDelete_1 = new JButton("Delete");
+    	btnDelete_1.setBounds(372, 256, 117, 29);
+    	customersPanel.add(btnDelete_1);
+    	
+    	JComboBox comboBox_1 = new JComboBox();
+    	comboBox_1.setBounds(360, 217, 130, 27);
+    	customersPanel.add(comboBox_1);
+    	
+    	JLabel lblSelect_2 = new JLabel("Select");
+    	lblSelect_2.setBounds(320, 217, 61, 27);
+    	customersPanel.add(lblSelect_2);
+    	
+    	JComboBox comboBox_2 = new JComboBox();
+    	comboBox_2.setBounds(141, 162, 130, 27);
+    	customersPanel.add(comboBox_2);
+    	
+    	textField_4 = new JTextField();
+    	textField_4.setColumns(10);
+    	textField_4.setBounds(141, 190, 130, 26);
+    	customersPanel.add(textField_4);
+    	
+    	textField_5 = new JTextField();
+    	textField_5.setColumns(10);
+    	textField_5.setBounds(141, 216, 130, 26);
+    	customersPanel.add(textField_5);
+    	
+    	textField_6 = new JTextField();
+    	textField_6.setColumns(10);
+    	textField_6.setBounds(141, 243, 130, 42);
+    	customersPanel.add(textField_6);
+    	
+    	JLabel label = new JLabel("Phone #");
+    	label.setBounds(91, 194, 61, 16);
+    	customersPanel.add(label);
+    	
+    	JLabel label_1 = new JLabel("Email");
+    	label_1.setBounds(91, 221, 61, 16);
+    	customersPanel.add(label_1);
+    	
+    	JLabel label_2 = new JLabel("Address");
+    	label_2.setBounds(80, 243, 61, 26);
+    	customersPanel.add(label_2);
 
 		
     	//Should we dynamically init on tab click ?
@@ -485,7 +606,4 @@ public class PdsPage extends JFrame {
 		}
 		return returnVal;
     }
-    
-  //Action Performed methods for Customers
-    
 }
