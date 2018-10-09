@@ -91,7 +91,9 @@ public class PdsPage extends JFrame {
 		
 		//Menu Pizza Tab
 		MenuPizzaPanel = new JPanel();
-    	tabbedPanel.addTab("Menu Pizzas", null, MenuPizzaPanel, null);
+		tabbedPanel.addTab("Menu Pizzas", null, MenuPizzaPanel, null);
+		
+		
 		
     	//Should we dynamically init on tab click ?
     	initIngredientTab();
@@ -320,6 +322,7 @@ public class PdsPage extends JFrame {
     	
     }
 
+    //Action Performed methods for ingredients
     private void addIngredientButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		// clear error message
 		error = "";
@@ -381,4 +384,7 @@ public class PdsPage extends JFrame {
 		}
 		return returnVal;
     }
+    
+  //Action Performed methods for Customers
+    
 }
