@@ -71,6 +71,8 @@ public class PdsPage extends JFrame {
 	private HashMap<Integer, Customer> customers;
 	private Integer selectedRemoveCustomer = -1;
 	private Integer selectedUpdateCustomer = -1;
+	private JComboBox<String> selectCustToDelete;
+	private JComboBox<String> selectCustToUpdate;
 	private JTextField custName;
 	private JTextField custPhone;
 	private JTextField custEmail;
@@ -80,15 +82,15 @@ public class PdsPage extends JFrame {
 	private JTextField updateEmail;
 	private JTextField updateAddress;
 	private JLabel custErrorMessage;
-	private JComboBox<String> selectCustToDelete;
 	private JScrollPane custScrollPane;
-	private JComboBox<String> selectCustToUpdate;
+	
 		
 	/**
 	 * Create the frame.
 	 */
 	public PdsPage() {
 		initComponents();
+		refreshCustomerData();
 	}
 	private void initComponents() {
 		setTitle("Mamma Mia Pizza delivery");
@@ -324,7 +326,7 @@ public class PdsPage extends JFrame {
     	custErrorMessage.setBounds(283, 292, 61, 16);
     	customersPanel.add(custErrorMessage);
 
-    	JComboBox selectCustToUpdate = new JComboBox<String>(new String[0]);
+    	selectCustToUpdate = new JComboBox<String>(new String[0]);
     	selectCustToUpdate.setBounds(141, 162, 130, 27);
     	customersPanel.add(selectCustToUpdate);
     	selectCustToUpdate.addActionListener(new java.awt.event.ActionListener() {
@@ -344,7 +346,7 @@ public class PdsPage extends JFrame {
 		});
     	
     
-    	JComboBox selectCustToDelete = new JComboBox<String>(new String[0]);
+     selectCustToDelete = new JComboBox<String>(new String[0]);
     	selectCustToDelete.setBounds(360, 217, 130, 27);
     	customersPanel.add(selectCustToDelete);
     	selectCustToDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -689,7 +691,7 @@ public class PdsPage extends JFrame {
 			}
 		}
 		// update visuals
-		refreshIngredientData();
+		refreshCustomerData();
 	}
     
     
@@ -707,7 +709,7 @@ public class PdsPage extends JFrame {
 			}
 		}
 		// update visuals
-		refreshIngredientData();
+		refreshCustomerData();
     }
     
     private void refreshCustomerData() {
@@ -726,7 +728,7 @@ public class PdsPage extends JFrame {
 		}
 
 		// Update all Combo box instance
-		if (customers != null) {
+		
 			customers = new HashMap<Integer, Customer>();		
 			selectCustToDelete.removeAllItems();
 			selectCustToUpdate.removeAllItems();
@@ -737,11 +739,12 @@ public class PdsPage extends JFrame {
 				selectCustToUpdate.addItem(customer.getName());
 				index++;
 			}
+			
 			selectedRemoveCustomer = -1;
 			selectedUpdateCustomer = -1;
 			selectCustToDelete.setSelectedIndex(selectedRemoveCustomer);
 			selectCustToUpdate.setSelectedIndex(selectedUpdateCustomer);
-		}
+		
 //			
 //			// Customer Overview
 //			DefaultTableModel customerOverviewDtm = new DefaultTableModel(0, 0);
