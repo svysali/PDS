@@ -84,10 +84,10 @@ public class PdsController {
 	}
 	
 	//All menu pizza related methods
-	public static void createMenuPizza(String name,float calorieCount,float price,ArrayList<Ingredient> ingredients) throws InvalidInputException {
+	public static void createMenuPizza(String name,float calorieCount,float price,Ingredient... ingredients) throws InvalidInputException {
 		PDS pds = PdsApplication.getPDS();
 		try {
-			Pizza newMenuPizza = new MenuPizza(pds,name,calorieCount,price);
+			Pizza newMenuPizza = new MenuPizza(pds, name, calorieCount, price, ingredients);
 			for (Ingredient aIngredient : ingredients) {
 				newMenuPizza.addIngredient(aIngredient);
 			}

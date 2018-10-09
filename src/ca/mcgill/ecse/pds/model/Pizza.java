@@ -2,13 +2,15 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse.pds.model;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Pizza abstract
  */
+// line 66 "../../../../../PDSPersistence.ump"
 // line 18 "../../../../../pds.ump"
-public abstract class Pizza
+public abstract class Pizza implements Serializable
 {
 
   //------------------------
@@ -26,10 +28,15 @@ public abstract class Pizza
   // CONSTRUCTOR
   //------------------------
 
-  public Pizza(PDS aPDS)
+  public Pizza(PDS aPDS, Ingredient... allIngredients)
   {
     size = 12;
     ingredients = new ArrayList<Ingredient>();
+    boolean didAddIngredients = setIngredients(allIngredients);
+    if (!didAddIngredients)
+    {
+      throw new RuntimeException("Unable to create Pizza, must have at least 1 ingredients");
+    }
     boolean didAddPDS = setPDS(aPDS);
     if (!didAddPDS)
     {
@@ -91,9 +98,9 @@ public abstract class Pizza
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfIngredients()
   {
-    return 0;
+    return 1;
   }
-  /* Code from template association_AddUnidirectionalMany */
+  /* Code from template association_AddUnidirectionalMStar */
   public boolean addIngredient(Ingredient aIngredient)
   {
     boolean wasAdded = false;
@@ -106,12 +113,43 @@ public abstract class Pizza
   public boolean removeIngredient(Ingredient aIngredient)
   {
     boolean wasRemoved = false;
-    if (ingredients.contains(aIngredient))
+    if (!ingredients.contains(aIngredient))
     {
-      ingredients.remove(aIngredient);
-      wasRemoved = true;
+      return wasRemoved;
     }
+
+    if (numberOfIngredients() <= minimumNumberOfIngredients())
+    {
+      return wasRemoved;
+    }
+
+    ingredients.remove(aIngredient);
+    wasRemoved = true;
     return wasRemoved;
+  }
+  /* Code from template association_SetUnidirectionalMStar */
+  public boolean setIngredients(Ingredient... newIngredients)
+  {
+    boolean wasSet = false;
+    ArrayList<Ingredient> verifiedIngredients = new ArrayList<Ingredient>();
+    for (Ingredient aIngredient : newIngredients)
+    {
+      if (verifiedIngredients.contains(aIngredient))
+      {
+        continue;
+      }
+      verifiedIngredients.add(aIngredient);
+    }
+
+    if (verifiedIngredients.size() != newIngredients.length || verifiedIngredients.size() < minimumNumberOfIngredients())
+    {
+      return wasSet;
+    }
+
+    ingredients.clear();
+    ingredients.addAll(verifiedIngredients);
+    wasSet = true;
+    return wasSet;
   }
   /* Code from template association_AddIndexControlFunctions */
   public boolean addIngredientAt(Ingredient aIngredient, int index)
@@ -184,5 +222,13 @@ public abstract class Pizza
     return super.toString() + "["+
             "size" + ":" + getSize()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "pDS = "+(getPDS()!=null?Integer.toHexString(System.identityHashCode(getPDS())):"null");
-  }
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 69 "../../../../../PDSPersistence.ump"
+  private static final long serialVersionUID = 1529112079821173014L ;
+
+  
 }

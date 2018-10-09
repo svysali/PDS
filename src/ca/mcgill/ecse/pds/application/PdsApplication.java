@@ -15,8 +15,6 @@ public class PdsApplication {
                 new PdsPage().setVisible(true);
             }
         });
-		
-		// Step 1
 		PDS pds = getPDS();
 		printPdsStatistics(pds);
 			
@@ -31,6 +29,10 @@ public class PdsApplication {
 		System.out.println("Number of Ingredients: " + pds.getIngredients().size());
 		for (Ingredient ingredient : pds.getIngredients()) {
 			System.out.println("Ingredient: " + ingredient.getName() + " / Price: " + ingredient.getPrice());
+		}
+		System.out.println("Number of Pizzas: " + pds.getPizzas().size());
+		for (Pizza pizza : pds.getPizzas()) {
+			System.out.println(pizza.toString());
 		}
 		System.out.println("========================");
 	}

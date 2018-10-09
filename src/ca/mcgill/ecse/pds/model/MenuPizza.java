@@ -5,7 +5,7 @@ package ca.mcgill.ecse.pds.model;
 import java.io.Serializable;
 import java.util.*;
 
-// line 66 "../../../../../PDSPersistence.ump"
+// line 72 "../../../../../PDSPersistence.ump"
 // line 24 "../../../../../pds.ump"
 public class MenuPizza extends Pizza implements Serializable
 {
@@ -23,9 +23,9 @@ public class MenuPizza extends Pizza implements Serializable
   // CONSTRUCTOR
   //------------------------
 
-  public MenuPizza(PDS aPDS, String aName, float aCalorieCount, float aPrice)
+  public MenuPizza(PDS aPDS, String aName, float aCalorieCount, float aPrice, Ingredient... allIngredients)
   {
-    super(aPDS);
+    super(aPDS, allIngredients);
     // line 28 "../../../../../pds.ump"
     if (aName == null || aName.length() == 0) {
     	  throw new RuntimeException("The name for a pizza on the Menu cannot be empty.");
@@ -121,7 +121,7 @@ public class MenuPizza extends Pizza implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 69 "../../../../../PDSPersistence.ump"
+  // line 75 "../../../../../PDSPersistence.ump"
   private static final long serialVersionUID = -7403802774454467836L ;
 
   

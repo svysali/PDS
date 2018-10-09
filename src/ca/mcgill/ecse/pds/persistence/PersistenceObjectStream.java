@@ -34,6 +34,7 @@ public class PersistenceObjectStream {
 			fileIn.close();
 		} catch (Exception e) {
 			o = null;
+			System.out.println("We hit a snag!!!!\n" + e.getMessage());
 		}
 		return o;
 	}

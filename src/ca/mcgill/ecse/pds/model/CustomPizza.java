@@ -19,9 +19,9 @@ public abstract class CustomPizza extends Pizza
   // CONSTRUCTOR
   //------------------------
 
-  public CustomPizza(PDS aPDS)
+  public CustomPizza(PDS aPDS, Ingredient... allIngredients)
   {
-    super(aPDS);
+    super(aPDS, allIngredients);
     basePrice = (float) 5.0;
   }
 

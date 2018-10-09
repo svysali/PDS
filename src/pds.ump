@@ -17,7 +17,7 @@ class PDS {
 //Pizza abstract
 class Pizza {
   Integer size = 12;
-  * -> * Ingredient ingredients;
+  * -> 1..* Ingredient ingredients;
   abstract float getPrice();
 }
 

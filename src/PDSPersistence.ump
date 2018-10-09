@@ -63,6 +63,12 @@ class Customer {
   }  
 }
 
+class Pizza {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = 1529112079821173014L;
+}
+
 class MenuPizza {
   depend java.io.Serializable;
   isA Serializable;
