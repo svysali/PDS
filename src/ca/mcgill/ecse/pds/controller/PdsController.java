@@ -103,7 +103,11 @@ public class PdsController {
 	//ALL customer related methods
 	
 	public static void createCustomer(String name,String phoneNumber,String emailAddress, String deliveryAddress) throws InvalidInputException {
+		String error = "";
 		PDS pds = PdsApplication.getPDS();
+		if (name == null || deliveryAddress==null || name == "" || deliveryAddress=="" ){
+			error = error + "Customer Fields cannot be left blank \n";	
+		}
 		try {
 			pds.addCustomer(name,phoneNumber, emailAddress, deliveryAddress);
 			PdsApplication.save();

@@ -38,6 +38,7 @@ public class PdsApplication {
 		for (Customer customer : pds.getCustomers()) {
 			System.out.println("Customer: " + customer.getName() + " / Address: " + customer.getDeliveryAddress());
 		}
+		
 		System.out.println("========================");
 	}
 	

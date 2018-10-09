@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import ca.mcgill.ecse.pds.controller.InvalidInputException;
 import ca.mcgill.ecse.pds.controller.PdsController;
+import ca.mcgill.ecse.pds.model.Customer;
 import ca.mcgill.ecse.pds.model.Ingredient;
 
 import javax.swing.GroupLayout;
@@ -65,14 +66,23 @@ public class PdsPage extends JFrame {
 	private Integer selectedUpdateIngredient = -1;
 	private String overviewIngredientColumnNames[] = {"Name", "Price"};
 	private JTable table;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTable table_1;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
+	
+	//Customer Panel Elements
+	private HashMap<Integer, Customer> customers;
+	private Integer selectedRemoveCustomer = -1;
+	private Integer selectedUpdateCustomer = -1;
+	private JTextField custName;
+	private JTextField custPhone;
+	private JTextField custEmail;
+	private JTextField custAddress;
+	private JTable existingCustomersTable;
+	private JTextField updatePhone;
+	private JTextField updateEmail;
+	private JTextField updateAddress;
+	private JLabel custErrorMessage;
+	private JComboBox<String> selectCustToDelete;
+	private JScrollPane custScrollPane;
+	private JComboBox<String> selectCustToUpdate;
 		
 	/**
 	 * Create the frame.
@@ -198,10 +208,14 @@ public class PdsPage extends JFrame {
     	table = new JTable();
     	scrollPane.setViewportView(table);
     	menuPizzaInitialPanel.setLayout(gl_menuPizzaInitialPanel);
-    	
+    
+    
+    	//Orders panel
     	JPanel ordersPanel = new JPanel();
     	tabbedPanel.addTab("Orders", null, ordersPanel, null);
     	
+    	
+    	//Customer panel 
     	JPanel customersPanel = new JPanel();
     	tabbedPanel.addTab("Customers", null, customersPanel, null);
     	customersPanel.setLayout(null);
@@ -214,41 +228,47 @@ public class PdsPage extends JFrame {
     	lblNewCustomer.setBounds(372, 6, 129, 16);
     	customersPanel.add(lblNewCustomer);
     	
-    	textField = new JTextField();
-    	textField.setBounds(360, 25, 130, 26);
-    	customersPanel.add(textField);
-    	textField.setColumns(10);
+    	JScrollPane custScrollPane = new JScrollPane();
+    	custScrollPane.setBounds(16, 29, 255, 125);
+    	customersPanel.add(custScrollPane);
     	
-    	textField_1 = new JTextField();
-    	textField_1.setBounds(360, 50, 130, 26);
-    	customersPanel.add(textField_1);
-    	textField_1.setColumns(10);
+    	existingCustomersTable = new JTable();
+    	custScrollPane.setViewportView(existingCustomersTable);
     	
-    	textField_2 = new JTextField();
-    	textField_2.setBounds(360, 77, 130, 26);
-    	customersPanel.add(textField_2);
-    	textField_2.setColumns(10);
+    	custName = new JTextField();
+    	custName.setBounds(360, 25, 130, 26);
+    	customersPanel.add(custName);
+    	custName.setColumns(10);
     	
-    	textField_3 = new JTextField();
-    	textField_3.setBounds(360, 104, 130, 45);
-    	customersPanel.add(textField_3);
-    	textField_3.setColumns(10);
+    	custPhone = new JTextField();
+    	custPhone.setBounds(360, 50, 130, 26);
+    	customersPanel.add(custPhone);
+    	custPhone.setColumns(10);
     	
-    	JButton btnAdd = new JButton("Add");
-    	btnAdd.setBounds(372, 148, 117, 29);
-    	customersPanel.add(btnAdd);
+    	custEmail = new JTextField();
+    	custEmail.setBounds(360, 77, 130, 26);
+    	customersPanel.add(custEmail);
+    	custEmail.setColumns(10);
+    	
+    	custAddress = new JTextField();
+    	custAddress.setBounds(360, 104, 130, 45);
+    	customersPanel.add(custAddress);
+    	custAddress.setColumns(10);
+    	
+    	JButton btnAddCust = new JButton("Add");
+    	btnAddCust.setBounds(372, 148, 117, 29);
+    	customersPanel.add(btnAddCust);
+    	btnAddCust.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addCustomerButtonActionPerformed(e);
+			}
+		});
     	
     	JLabel lblUpdateCustomer = new JLabel("Update Customer");
     	lblUpdateCustomer.setBounds(16, 166, 125, 16);
     	customersPanel.add(lblUpdateCustomer);
     	
-    	JScrollPane scrollPane_1 = new JScrollPane();
-    	scrollPane_1.setBounds(16, 29, 255, 125);
-    	customersPanel.add(scrollPane_1);
-    	
-    	table_1 = new JTable();
-    	scrollPane_1.setViewportView(table_1);
-    	
+
     	JLabel lblDeleteCustomer = new JLabel("Delete Customer");
     	lblDeleteCustomer.setBounds(372, 189, 118, 16);
     	customersPanel.add(lblDeleteCustomer);
@@ -268,41 +288,25 @@ public class PdsPage extends JFrame {
     	JLabel lblAddress = new JLabel("Address");
     	lblAddress.setBounds(307, 106, 61, 16);
     	customersPanel.add(lblAddress);
-    	
-    	JButton btnUpdate = new JButton("Update");
-    	btnUpdate.setBounds(154, 287, 117, 29);
-    	customersPanel.add(btnUpdate);
-    	
-    	JButton btnDelete_1 = new JButton("Delete");
-    	btnDelete_1.setBounds(372, 256, 117, 29);
-    	customersPanel.add(btnDelete_1);
-    	
-    	JComboBox comboBox_1 = new JComboBox();
-    	comboBox_1.setBounds(360, 217, 130, 27);
-    	customersPanel.add(comboBox_1);
-    	
+    	 	
     	JLabel lblSelect_2 = new JLabel("Select");
     	lblSelect_2.setBounds(320, 217, 61, 27);
     	customersPanel.add(lblSelect_2);
     	
-    	JComboBox comboBox_2 = new JComboBox();
-    	comboBox_2.setBounds(141, 162, 130, 27);
-    	customersPanel.add(comboBox_2);
+    	updatePhone = new JTextField();
+    	updatePhone.setColumns(10);
+    	updatePhone.setBounds(141, 190, 130, 26);
+    	customersPanel.add(updatePhone);
     	
-    	textField_4 = new JTextField();
-    	textField_4.setColumns(10);
-    	textField_4.setBounds(141, 190, 130, 26);
-    	customersPanel.add(textField_4);
+    	updateEmail = new JTextField();
+    	updateEmail.setColumns(10);
+    	updateEmail.setBounds(141, 216, 130, 26);
+    	customersPanel.add(updateEmail);
     	
-    	textField_5 = new JTextField();
-    	textField_5.setColumns(10);
-    	textField_5.setBounds(141, 216, 130, 26);
-    	customersPanel.add(textField_5);
-    	
-    	textField_6 = new JTextField();
-    	textField_6.setColumns(10);
-    	textField_6.setBounds(141, 243, 130, 42);
-    	customersPanel.add(textField_6);
+    	updateAddress = new JTextField();
+    	updateAddress.setColumns(10);
+    	updateAddress.setBounds(141, 243, 130, 42);
+    	customersPanel.add(updateAddress);
     	
     	JLabel label = new JLabel("Phone #");
     	label.setBounds(91, 194, 61, 16);
@@ -315,10 +319,53 @@ public class PdsPage extends JFrame {
     	JLabel label_2 = new JLabel("Address");
     	label_2.setBounds(80, 243, 61, 26);
     	customersPanel.add(label_2);
+    	
+    	JLabel custErrorMessage = new JLabel(" ");
+    	custErrorMessage.setBounds(283, 292, 61, 16);
+    	customersPanel.add(custErrorMessage);
 
+    	JComboBox selectCustToUpdate = new JComboBox<String>(new String[0]);
+    	selectCustToUpdate.setBounds(141, 162, 130, 27);
+    	customersPanel.add(selectCustToUpdate);
+    	selectCustToUpdate.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		        JComboBox<String> cb = (JComboBox<String>) evt.getSource();
+		        selectedUpdateCustomer = cb.getSelectedIndex();
+			}
+		});
+    	
+    	JButton btnUpdateCust = new JButton("Update");
+    	btnUpdateCust.setBounds(154, 287, 117, 29);
+    	customersPanel.add(btnUpdateCust);
+    	btnUpdateCust.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateCustomerButtonActionPerformed(e);
+			}
+		});
+    	
+    
+    	JComboBox selectCustToDelete = new JComboBox<String>(new String[0]);
+    	selectCustToDelete.setBounds(360, 217, 130, 27);
+    	customersPanel.add(selectCustToDelete);
+    	selectCustToDelete.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		        JComboBox<String> cb = (JComboBox<String>) evt.getSource();
+		        selectedRemoveCustomer = cb.getSelectedIndex();
+			}
+		});
+
+    	JButton btnDeleteCust = new JButton("Delete");
+    	btnDeleteCust.setBounds(372, 256, 117, 29);
+    	customersPanel.add(btnDeleteCust);
+    	btnDeleteCust.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				removeCustomerButtonActionPerformed(e);
+			}
+		});
 		
     	//Should we dynamically init on tab click ?
     	initIngredientTab();
+
     	
 		contentPanel.setLayout(gl_contentPanel);
 	}
@@ -606,4 +653,109 @@ public class PdsPage extends JFrame {
 		}
 		return returnVal;
     }
+    
+    //Action Performed Methods for Customer
+    
+    private void addCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		// clear error message
+		error = "";
+		if (custName.getText() == null || custAddress.getText()==null ||custName.getText() == "" || custAddress.getText()=="" ){
+			error = error + "Customer info cannot be left blank \n";	
+		}
+		
+		if (error.length() == 0) {
+			try {
+				PdsController.createCustomer(custName.getText(), custPhone.getText(), custEmail.getText(), custAddress.getText());
+			} catch (InvalidInputException e) {
+				error = e.getMessage();
+			}
+		}	
+		// update visuals
+		refreshCustomerData();
+	}
+    
+    private void removeCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		// clear error message and basic input validation
+		error = "";
+		if (selectedRemoveCustomer < 0)
+			error = "A Customer needs to be selected for deletion!";
+		
+		if (error.length() == 0) {
+			// call the controller
+			try {
+				PdsController.deleteCustomer(customers.get(selectedRemoveCustomer));
+			} catch (InvalidInputException e) {
+				error = e.getMessage();
+			}
+		}
+		// update visuals
+		refreshIngredientData();
+	}
+    
+    
+    private void updateCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	error = "";
+    	if (selectedUpdateCustomer < 0)
+			error = "An Customer needs to be selected for update!";
+    	if (error.length() == 0) {
+			// call the controller
+			Customer selectedCustomer = customers.get(selectedUpdateCustomer);
+			try {
+				PdsController.updateCustomer(selectedCustomer.getName(),updatePhone.getText(), updateEmail.getText(),updateAddress.getText());
+			} catch (InvalidInputException e) {
+				error = e.getMessage();
+			}
+		}
+		// update visuals
+		refreshIngredientData();
+    }
+    
+    private void refreshCustomerData() {
+		// error
+		//custErrorMessage.setText(error);
+		if (error == null || error.length() == 0) {		
+			// Update all text fields
+			custName.setText("");
+			custPhone.setText("");		
+			custEmail.setText("");
+			custAddress.setText("");
+			
+			updatePhone.setText("");
+			updateEmail.setText("");
+			updateAddress.setText("");
+		}
+
+		// Update all Combo box instance
+		if (customers != null) {
+			customers = new HashMap<Integer, Customer>();		
+			selectCustToDelete.removeAllItems();
+			selectCustToUpdate.removeAllItems();
+			Integer index = 0;
+			for (Customer customer : PdsController.getCustomers()) {
+				customers.put(index, customer);
+				selectCustToDelete.addItem(customer.getName());
+				selectCustToUpdate.addItem(customer.getName());
+				index++;
+			}
+			selectedRemoveCustomer = -1;
+			selectedUpdateCustomer = -1;
+			selectCustToDelete.setSelectedIndex(selectedRemoveCustomer);
+			selectCustToUpdate.setSelectedIndex(selectedUpdateCustomer);
+		}
+//			
+//			// Customer Overview
+//			DefaultTableModel customerOverviewDtm = new DefaultTableModel(0, 0);
+//			customerOverviewDtm.setColumnIdentifiers(overviewIngredientColumnNames);
+//			existingCustomersTable.setModel(customerOverviewDtm);
+//			for (Customer customer : PdsController.getCustomers()) {
+//				Object[] obj = {customer.getName(), customer.getPhoneNumber(), customer.getEmailAddress(), customer.getDeliveryAddress()};
+//				customerOverviewDtm.addRow(obj);
+//			}
+//			Dimension d = existingCustomersTable.getPreferredSize();
+//			custScrollPane.setPreferredSize(new Dimension(d.width, 100));
+//			
+//			pack();
+		}
+    
+    
 }
