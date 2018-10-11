@@ -75,6 +75,8 @@ public class PdsPage extends JFrame {
 	
 	//Card 1 : Initial Data Elements
 	private JTable menuPizzaTable;
+	private JScrollPane menuPizzScrollPane;
+	private String overviewMenuPizzaColumnNames[] = {"Name", "Price","Calorie Count"};
 	private JLabel menuPizzaErrorMessage;
 	
 	//Card 2: Create New Menu Pizza Elements
@@ -369,7 +371,7 @@ public class PdsPage extends JFrame {
 		JLabel lblDeletePizza = new JLabel("Delete Pizza");
 		JLabel lblSelect_1 = new JLabel("Select");
 		
-		JScrollPane scrollPane = new JScrollPane();
+		menuPizzScrollPane = new JScrollPane();
 		
 		cBDeletePizza = new JComboBox();
 		cBDeletePizza.addActionListener(new java.awt.event.ActionListener() {
@@ -417,7 +419,7 @@ public class PdsPage extends JFrame {
 						.addGap(122))
 				.addGroup(gl_menuPizzaInitialPanel.createSequentialGroup()
 						.addGap(15)
-						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 476, GroupLayout.PREFERRED_SIZE)
+						.addComponent(menuPizzScrollPane, GroupLayout.PREFERRED_SIZE, 476, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(28, Short.MAX_VALUE))
 				.addGroup(gl_menuPizzaInitialPanel.createSequentialGroup()
 						.addGap(189)
@@ -430,7 +432,7 @@ public class PdsPage extends JFrame {
 						.addGap(8)
 						.addComponent(lblAvailablePizzas)
 						.addGap(18)
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+						.addComponent(menuPizzScrollPane, GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
 						.addGap(18)
 						.addGroup(gl_menuPizzaInitialPanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblOtherActions)
@@ -453,7 +455,7 @@ public class PdsPage extends JFrame {
 				);
 
 		menuPizzaTable = new JTable();
-		scrollPane.setViewportView(menuPizzaTable);
+		menuPizzScrollPane.setViewportView(menuPizzaTable);
 		menuPizzaInitialPanel.setLayout(gl_menuPizzaInitialPanel);
 
 		//Card 2
@@ -704,6 +706,19 @@ public class PdsPage extends JFrame {
 		}
 		selectedDeletePizzaIndex = -1;
 		cBDeletePizza.setSelectedIndex(selectedRemoveIngredient);
+		
+		// Menu Pizza Overview
+		DefaultTableModel menuPizzaOverviewDtm = new DefaultTableModel(0, 0);
+		menuPizzaOverviewDtm.setColumnIdentifiers(overviewMenuPizzaColumnNames);
+		menuPizzaTable.setModel(menuPizzaOverviewDtm);
+					for (MenuPizza menupizza : PdsController.getMenuPizzas()) {
+						Object[] obj = {menupizza.getName(), menupizza.getPrice(), menupizza.getCalorieCount()};
+						menuPizzaOverviewDtm.addRow(obj);
+					}
+					Dimension d = menuPizzaTable.getPreferredSize();
+					ingredientOverviewScrollPane.setPreferredSize(new Dimension(d.width, 100));
+
+					pack();
 	}
 	
 	private void refreshCreateNewMenuPizzaPanel() {
