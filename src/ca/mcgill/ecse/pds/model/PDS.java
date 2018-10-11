@@ -20,10 +20,24 @@ public class PDS implements Serializable
   private List<Customer> customers;
   private List<Ingredient> ingredients;
   private List<Order> orders;
+  private Menu menu;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
+
+  public PDS(Menu aMenu)
+  {
+    pizzas = new ArrayList<Pizza>();
+    customers = new ArrayList<Customer>();
+    ingredients = new ArrayList<Ingredient>();
+    orders = new ArrayList<Order>();
+    if (aMenu == null || aMenu.getPDS() != null)
+    {
+      throw new RuntimeException("Unable to create PDS due to aMenu");
+    }
+    menu = aMenu;
+  }
 
   public PDS()
   {
@@ -31,6 +45,7 @@ public class PDS implements Serializable
     customers = new ArrayList<Customer>();
     ingredients = new ArrayList<Ingredient>();
     orders = new ArrayList<Order>();
+    menu = new Menu(this);
   }
 
   //------------------------
@@ -156,13 +171,21 @@ public class PDS implements Serializable
     int index = orders.indexOf(aOrder);
     return index;
   }
+  /* Code from template association_GetOne */
+  public Menu getMenu()
+  {
+    return menu;
+  }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfPizzas()
   {
     return 0;
   }
   /* Code from template association_AddManyToOne */
-
+  public Pizza addPizza(float aPrice, Ingredient... allIngredients)
+  {
+    return new Pizza(aPrice, this, allIngredients);
+  }
 
   public boolean addPizza(Pizza aPizza)
   {
@@ -472,6 +495,12 @@ public class PDS implements Serializable
       orders.remove(aOrder);
     }
     
+    Menu existingMenu = menu;
+    menu = null;
+    if (existingMenu != null)
+    {
+      existingMenu.delete();
+    }
   }
 
   // line 9 "../../../../../PDSPersistence.ump"

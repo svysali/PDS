@@ -12,13 +12,25 @@ class PDS {
  1 <@>- * Customer customers;
  1 <@>- * Ingredient ingredients;
  1 <@>- * Order orders;
+ 1 <@>- 1 Menu menu;
 }
 
 //Pizza abstract
 class Pizza {
+  //abstract;
   Integer size = 12;
   * -> 1..* Ingredient ingredients;
-  abstract float getPrice();
+  Float price;
+  before constructor, setPrice {
+    if (aPrice <= 0.0f ) {
+	  throw new RuntimeException("The price for a pizza cannot be less than zero.");
+	}
+  }
+  //abstract float getPrice();
+}
+
+class Menu {
+ 1 <@>- * MenuPizza menupizzas;
 }
 
 class MenuPizza {
@@ -35,17 +47,17 @@ class MenuPizza {
 	  throw new RuntimeException("The calorie count for a pizza on the Menu cannot be less than zero.");
 	}
   }
-  Float price;
-  before constructor, setPrice {
-    if (aPrice <= 0.0f ) {
-	  throw new RuntimeException("The price for a pizza on the Menu cannot be less than zero.");
-	}
+
+  float getPrice(){
+  	return super.getPrice();
   }
 }
 
 class CustomPizza {
   isA Pizza;
-  Float basePrice = 5.0f;
+  float getPrice(){
+  	return super.getPrice();
+  }
 }
 
 class Ingredient {
@@ -62,7 +74,6 @@ class Ingredient {
 	}
   }
 }
-
 class Customer {
   autounique id;
   String name;
@@ -82,7 +93,7 @@ class Order {
 
 class OrderItem {
  Float price;
-  * -> 1 Pizza;
+  * -> 1 Pizza pizza;
   1 <@>- * Customization customizations;
 }
 

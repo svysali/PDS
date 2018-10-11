@@ -2,55 +2,47 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse.pds.model;
+import java.io.Serializable;
 import java.util.*;
 
-// line 46 "../../../../../pds.ump"
-public abstract class CustomPizza extends Pizza
+// line 83 "../../../../../PDSPersistence.ump"
+// line 56 "../../../../../pds.ump"
+public class CustomPizza extends Pizza implements Serializable
 {
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
-  //CustomPizza Attributes
-  private float basePrice;
-
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public CustomPizza(PDS aPDS, Ingredient... allIngredients)
+  public CustomPizza(float aPrice, PDS aPDS, Ingredient... allIngredients)
   {
-    super(aPDS, allIngredients);
-    basePrice = (float) 5.0;
+    super(aPrice, aPDS, allIngredients);
   }
 
   //------------------------
   // INTERFACE
   //------------------------
 
-  public boolean setBasePrice(float aBasePrice)
-  {
-    boolean wasSet = false;
-    basePrice = aBasePrice;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public float getBasePrice()
-  {
-    return basePrice;
-  }
-
   public void delete()
   {
     super.delete();
   }
 
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "basePrice" + ":" + getBasePrice()+ "]";
+  // line 59 "../../../../../pds.ump"
+  public float getPrice(){
+    return super.getPrice();
   }
+  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 86 "../../../../../PDSPersistence.ump"
+  private static final long serialVersionUID = 3258026461020809115L ;
+
+  
 }

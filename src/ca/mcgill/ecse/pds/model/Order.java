@@ -6,8 +6,8 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.*;
 
-// line 21 "../../../../../PDSPersistence.ump"
-// line 75 "../../../../../pds.ump"
+// line 26 "../../../../../PDSPersistence.ump"
+// line 86 "../../../../../pds.ump"
 public class Order implements Serializable
 {
 
@@ -283,7 +283,7 @@ public class Order implements Serializable
     }
   }
 
-  // line 27 "../../../../../PDSPersistence.ump"
+  // line 32 "../../../../../PDSPersistence.ump"
    public static  void reinitializeAutouniqueID(List<Order> orders){
     nextNumber = 0; 
     for (Order order : orders) {
@@ -309,7 +309,7 @@ public class Order implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 24 "../../../../../PDSPersistence.ump"
+  // line 29 "../../../../../PDSPersistence.ump"
   private static final long serialVersionUID = 8896099581655989380L ;
 
   

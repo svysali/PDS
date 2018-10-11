@@ -8,9 +8,9 @@ import java.util.*;
 /**
  * Pizza abstract
  */
-// line 66 "../../../../../PDSPersistence.ump"
-// line 18 "../../../../../pds.ump"
-public abstract class Pizza implements Serializable
+// line 71 "../../../../../PDSPersistence.ump"
+// line 19 "../../../../../pds.ump"
+public class Pizza implements Serializable
 {
 
   //------------------------
@@ -19,6 +19,7 @@ public abstract class Pizza implements Serializable
 
   //Pizza Attributes
   private int size;
+  private float price;
 
   //Pizza Associations
   private List<Ingredient> ingredients;
@@ -28,9 +29,15 @@ public abstract class Pizza implements Serializable
   // CONSTRUCTOR
   //------------------------
 
-  public Pizza(PDS aPDS, Ingredient... allIngredients)
+  public Pizza(float aPrice, PDS aPDS, Ingredient... allIngredients)
   {
+    // line 25 "../../../../../pds.ump"
+    if (aPrice <= 0.0f ) {
+    	  throw new RuntimeException("The price for a pizza cannot be less than zero.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
     size = 12;
+    price = aPrice;
     ingredients = new ArrayList<Ingredient>();
     boolean didAddIngredients = setIngredients(allIngredients);
     if (!didAddIngredients)
@@ -56,9 +63,30 @@ public abstract class Pizza implements Serializable
     return wasSet;
   }
 
+  public boolean setPrice(float aPrice)
+  {
+    boolean wasSet = false;
+    // line 25 "../../../../../pds.ump"
+    if (aPrice <= 0.0f ) {
+    	  throw new RuntimeException("The price for a pizza cannot be less than zero.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
+    price = aPrice;
+    wasSet = true;
+    return wasSet;
+  }
+
+  /**
+   * abstract;
+   */
   public int getSize()
   {
     return size;
+  }
+
+  public float getPrice()
+  {
+    return price;
   }
   /* Code from template association_GetMany */
   public Ingredient getIngredient(int index)
@@ -214,20 +242,19 @@ public abstract class Pizza implements Serializable
     }
   }
 
-  public abstract float getPrice();
-
 
   public String toString()
   {
     return super.toString() + "["+
-            "size" + ":" + getSize()+ "]" + System.getProperties().getProperty("line.separator") +
+            "size" + ":" + getSize()+ "," +
+            "price" + ":" + getPrice()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "pDS = "+(getPDS()!=null?Integer.toHexString(System.identityHashCode(getPDS())):"null");
   }  
   //------------------------
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 69 "../../../../../PDSPersistence.ump"
+  // line 74 "../../../../../PDSPersistence.ump"
   private static final long serialVersionUID = 1529112079821173014L ;
 
   

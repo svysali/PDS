@@ -16,18 +16,6 @@ public class PdsController {
 	public PdsController() {
 	}
 		
-	private static Date cleanDate(Date date) {
-	    Calendar cal = Calendar.getInstance();
-	    cal.setTimeInMillis(date.getTime());
-	    cal.set(Calendar.HOUR_OF_DAY, 0);
-	    cal.set(Calendar.MINUTE, 0);
-	    cal.set(Calendar.SECOND, 0);
-	    cal.set(Calendar.MILLISECOND, 0);
-	    java.util.Date tempCleanedDate = cal.getTime();
-	    java.sql.Date cleanedDate = new java.sql.Date(tempCleanedDate.getTime());
-	    return cleanedDate;
-	}
-	
 	//All ingredient related methods
 	public static void createIngredient(String name, float price) throws InvalidInputException {
 		PDS pds = PdsApplication.getPDS();
@@ -87,11 +75,25 @@ public class PdsController {
 	public static void createMenuPizza(String name,float calorieCount,float price,Ingredient... ingredients) throws InvalidInputException {
 		PDS pds = PdsApplication.getPDS();
 		try {
-			Pizza newMenuPizza = new MenuPizza(pds, name, calorieCount, price, ingredients);
+			MenuPizza newMenuPizza = new MenuPizza(price, pds, name, calorieCount, pds.getMenu(),ingredients);
 			for (Ingredient aIngredient : ingredients) {
 				newMenuPizza.addIngredient(aIngredient);
 			}
 			pds.addPizza(newMenuPizza);
+			PdsApplication.save();
+		}
+		catch (RuntimeException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
+	}
+	
+	public static List<MenuPizza> getMenuPizzas() {
+		return PdsApplication.getPDS().getMenu().getMenupizzas();
+	}
+	
+	public static void deleteMenuPizza(MenuPizza menupizza) throws InvalidInputException {
+		menupizza.delete();
+		try {
 			PdsApplication.save();
 		}
 		catch (RuntimeException e) {

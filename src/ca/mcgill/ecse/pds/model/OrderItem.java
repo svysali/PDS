@@ -5,8 +5,8 @@ package ca.mcgill.ecse.pds.model;
 import java.io.Serializable;
 import java.util.*;
 
-// line 38 "../../../../../PDSPersistence.ump"
-// line 83 "../../../../../pds.ump"
+// line 43 "../../../../../PDSPersistence.ump"
+// line 94 "../../../../../pds.ump"
 public class OrderItem implements Serializable
 {
 
@@ -230,7 +230,7 @@ public class OrderItem implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 41 "../../../../../PDSPersistence.ump"
+  // line 46 "../../../../../PDSPersistence.ump"
   private static final long serialVersionUID = 386717977557499839L ;
 
   

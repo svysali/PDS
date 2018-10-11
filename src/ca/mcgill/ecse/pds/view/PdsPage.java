@@ -14,6 +14,8 @@ import javax.swing.table.DefaultTableModel;
 import ca.mcgill.ecse.pds.controller.InvalidInputException;
 import ca.mcgill.ecse.pds.controller.PdsController;
 import ca.mcgill.ecse.pds.model.Ingredient;
+import ca.mcgill.ecse.pds.model.MenuPizza;
+import ca.mcgill.ecse.pds.model.Pizza;
 import ca.mcgill.ecse.pds.utils.IngredientRenderer;
 
 import javax.swing.DefaultListModel;
@@ -82,10 +84,14 @@ public class PdsPage extends JFrame {
 	private JLabel createMenuPizzaErrorMessage;
 	private JList listAddedIngredients;
 	private JList listAvailableIngredients;
+	private JComboBox cBDeletePizza;
 	private DefaultListModel<Ingredient> availableListModel;
 	private DefaultListModel<Ingredient> addedListModel;
 
-
+	private HashMap<Integer, MenuPizza> menuPizzas;
+	private Integer selectedDeletePizzaIndex = -1;
+	
+	
 	/**
 	 * Create the frame.
 	 */
@@ -365,11 +371,22 @@ public class PdsPage extends JFrame {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
-		JComboBox cBDeletePizza = new JComboBox();
+		cBDeletePizza = new JComboBox();
+		cBDeletePizza.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				JComboBox<String> cb = (JComboBox<String>) evt.getSource();
+				selectedDeletePizzaIndex = cb.getSelectedIndex();
+			}
+		});
 		
 		JButton btnLaunchNewMenuPizzaPage = new JButton("New menu Pizza...");
 		JButton btnLaunchEditPizzaPage = new JButton("Edit Menu Pizza ...");
 		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deleteMenuPizzaButtonActionPerformed(e);
+			}
+		});
 		
 		GroupLayout gl_menuPizzaInitialPanel = new GroupLayout(menuPizzaInitialPanel);
 		gl_menuPizzaInitialPanel.setHorizontalGroup(
@@ -543,8 +560,7 @@ public class PdsPage extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				createMenuPizzaButtonActionPerformed(e);
 			}	
-		}
-				);
+		});
 		
 		createMenuPizzaErrorMessage = new JLabel("This is an error label");
 		
@@ -677,7 +693,17 @@ public class PdsPage extends JFrame {
 	}
 
 	private void refreshMenuPizzaInitialData() {
-		
+		menuPizzas = new HashMap<Integer, MenuPizza>();
+		cBDeletePizza.removeAllItems();
+	
+		Integer index = 0;
+		for (MenuPizza mpizza : PdsController.getMenuPizzas()) {
+			menuPizzas.put(index, mpizza);
+			cBDeletePizza.addItem(mpizza.getName());
+			index++;
+		}
+		selectedDeletePizzaIndex = -1;
+		cBDeletePizza.setSelectedIndex(selectedRemoveIngredient);
 	}
 	
 	private void refreshCreateNewMenuPizzaPanel() {
@@ -699,7 +725,7 @@ public class PdsPage extends JFrame {
 
 	//  End of Panel Initialization and refresh methods 
 
-	//  Beging action performed methods 
+	//  Begin action performed methods 
 
 	//Ingredients
 	private void addIngredientButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -781,6 +807,24 @@ public class PdsPage extends JFrame {
 				error = e.getMessage();
 			}
 		} 
+	}
+	
+	private void deleteMenuPizzaButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		//delete the pizza
+		error = "";
+		if (selectedDeletePizzaIndex < 0)
+			error = "A Pizza needs to be selected for deletion!";
+
+		if (error.length() == 0) {
+			// call the controller
+			try {
+				PdsController.deleteMenuPizza(menuPizzas.get(selectedDeletePizzaIndex));
+			} catch (InvalidInputException e) {
+				error = e.getMessage();
+			}
+		}
+		// update visuals
+		refreshMenuPizzaInitialData();
 	}
 
 	// End Action performed methods

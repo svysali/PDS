@@ -12,6 +12,11 @@ class PDS {
   
 }
 
+class Menu {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = -2367786829324099582L;
+}
 class Ingredient {
   depend java.io.Serializable;
   isA Serializable;
@@ -73,4 +78,10 @@ class MenuPizza {
   depend java.io.Serializable;
   isA Serializable;
   private static final long serialVersionUID = -7403802774454467836L;
+}
+
+class CustomPizza {
+ depend java.io.Serializable;
+ isA Serializable;
+ private static final long serialVersionUID = 3258026461020809115L;
 }

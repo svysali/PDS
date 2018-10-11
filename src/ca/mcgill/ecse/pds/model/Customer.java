@@ -6,8 +6,8 @@ import java.io.Serializable;
 import java.util.*;
 import java.sql.Date;
 
-// line 50 "../../../../../PDSPersistence.ump"
-// line 66 "../../../../../pds.ump"
+// line 55 "../../../../../PDSPersistence.ump"
+// line 77 "../../../../../pds.ump"
 public class Customer implements Serializable
 {
 
@@ -255,7 +255,7 @@ public class Customer implements Serializable
     }
   }
 
-  // line 56 "../../../../../PDSPersistence.ump"
+  // line 61 "../../../../../PDSPersistence.ump"
    public static  void reinitializeAutouniqueID(List<Customer> customers){
     nextId = 0; 
     for (Customer customer : customers) {
@@ -281,7 +281,7 @@ public class Customer implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 53 "../../../../../PDSPersistence.ump"
+  // line 58 "../../../../../PDSPersistence.ump"
   private static final long serialVersionUID = 2045406856025012133L ;
 
   

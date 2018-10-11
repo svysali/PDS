@@ -30,9 +30,9 @@ public class PdsApplication {
 		for (Ingredient ingredient : pds.getIngredients()) {
 			System.out.println("Ingredient: " + ingredient.getName() + " / Price: " + ingredient.getPrice());
 		}
-		System.out.println("Number of Pizzas: " + pds.getPizzas().size());
-		for (Pizza pizza : pds.getPizzas()) {
-			System.out.println(pizza.toString());
+		System.out.println("Number of Pre Build Pizzas: " + pds.getMenu().getMenupizzas().size());
+		for (MenuPizza mpizza : pds.getMenu().getMenupizzas()) {
+			System.out.println(mpizza.toString());
 		}
 		System.out.println("========================");
 	}
