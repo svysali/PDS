@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 83 "../../../../../PDSPersistence.ump"
-// line 56 "../../../../../pds.ump"
+// line 52 "../../../../../pds.ump"
 public class CustomPizza extends Pizza implements Serializable
 {
 
@@ -30,11 +30,6 @@ public class CustomPizza extends Pizza implements Serializable
   public void delete()
   {
     super.delete();
-  }
-
-  // line 59 "../../../../../pds.ump"
-  public float getPrice(){
-    return super.getPrice();
   }
   
   //------------------------

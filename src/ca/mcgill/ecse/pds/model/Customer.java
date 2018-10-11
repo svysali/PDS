@@ -7,7 +7,7 @@ import java.util.*;
 import java.sql.Date;
 
 // line 55 "../../../../../PDSPersistence.ump"
-// line 77 "../../../../../pds.ump"
+// line 70 "../../../../../pds.ump"
 public class Customer implements Serializable
 {
 
@@ -40,6 +40,11 @@ public class Customer implements Serializable
 
   public Customer(String aName, String aPhoneNumber, String aEmailAddress, String aDeliveryAddress, PDS aPDS)
   {
+    // line 77 "../../../../../pds.ump"
+    if ((aPhoneNumber == null || aPhoneNumber.length() == 0 ) && (aEmailAddress == null || aEmailAddress.length() == 0)) {
+    	  throw new RuntimeException("PhoneNumber or Email Address must be provided");
+    	}
+    // END OF UMPLE BEFORE INJECTION
     name = aName;
     phoneNumber = aPhoneNumber;
     emailAddress = aEmailAddress;
@@ -154,9 +159,9 @@ public class Customer implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Order addOrder(Date aDate, float aTotalPrice, PDS aPDS)
+  public Order addOrder(Date aDate, PDS aPDS)
   {
-    return new Order(aDate, aTotalPrice, aPDS, this);
+    return new Order(aDate, aPDS, this);
   }
 
   public boolean addOrder(Order aOrder)

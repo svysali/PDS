@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.util.*;
 
 // line 26 "../../../../../PDSPersistence.ump"
-// line 86 "../../../../../pds.ump"
+// line 84 "../../../../../pds.ump"
 public class Order implements Serializable
 {
 
@@ -23,7 +23,7 @@ public class Order implements Serializable
 
   //Order Attributes
   private Date date;
-  private float totalPrice;
+  private int quantity;
   private boolean isDelivered;
 
   //Autounique Attributes
@@ -38,10 +38,10 @@ public class Order implements Serializable
   // CONSTRUCTOR
   //------------------------
 
-  public Order(Date aDate, float aTotalPrice, PDS aPDS, Customer aCustomer)
+  public Order(Date aDate, PDS aPDS, Customer aCustomer)
   {
     date = aDate;
-    totalPrice = aTotalPrice;
+    quantity = 1;
     isDelivered = false;
     number = nextNumber++;
     orderItem = new ArrayList<OrderItem>();
@@ -69,10 +69,10 @@ public class Order implements Serializable
     return wasSet;
   }
 
-  public boolean setTotalPrice(float aTotalPrice)
+  public boolean setQuantity(int aQuantity)
   {
     boolean wasSet = false;
-    totalPrice = aTotalPrice;
+    quantity = aQuantity;
     wasSet = true;
     return wasSet;
   }
@@ -90,9 +90,9 @@ public class Order implements Serializable
     return date;
   }
 
-  public float getTotalPrice()
+  public int getQuantity()
   {
-    return totalPrice;
+    return quantity;
   }
 
   public boolean getIsDelivered()
@@ -155,9 +155,9 @@ public class Order implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public OrderItem addOrderItem(float aPrice, Pizza aPizza)
+  public OrderItem addOrderItem(Pizza aPizza)
   {
-    return new OrderItem(aPrice, aPizza, this);
+    return new OrderItem(aPizza, this);
   }
 
   public boolean addOrderItem(OrderItem aOrderItem)
@@ -299,7 +299,7 @@ public class Order implements Serializable
   {
     return super.toString() + "["+
             "number" + ":" + getNumber()+ "," +
-            "totalPrice" + ":" + getTotalPrice()+ "," +
+            "quantity" + ":" + getQuantity()+ "," +
             "isDelivered" + ":" + getIsDelivered()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "date" + "=" + (getDate() != null ? !getDate().equals(this)  ? getDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "pDS = "+(getPDS()!=null?Integer.toHexString(System.identityHashCode(getPDS())):"null") + System.getProperties().getProperty("line.separator") +

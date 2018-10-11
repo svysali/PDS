@@ -47,17 +47,10 @@ class MenuPizza {
 	  throw new RuntimeException("The calorie count for a pizza on the Menu cannot be less than zero.");
 	}
   }
-
-  float getPrice(){
-  	return super.getPrice();
-  }
 }
 
 class CustomPizza {
   isA Pizza;
-  float getPrice(){
-  	return super.getPrice();
-  }
 }
 
 class Ingredient {
@@ -80,25 +73,25 @@ class Customer {
   String phoneNumber;
   String emailAddress;
   String deliveryAddress;
+  before constructor {
+  	if ((aPhoneNumber == null || aPhoneNumber.length() == 0 ) && (aEmailAddress == null || aEmailAddress.length() == 0)) {
+	  throw new RuntimeException("PhoneNumber or Email Address must be provided");
+	}
+  }
   1 -- * Order orders;
 }
 
 class Order {
   autounique number;
   Date date;
+  Integer quantity = 1;
+  Boolean isDelivered = false;
   1 <@>- * OrderItem orderItem;
-  Float totalPrice;
-  Boolean isDelivered = false; 
 }
 
 class OrderItem {
- Float price;
   * -> 1 Pizza pizza;
-  1 <@>- * Customization customizations;
+  * -> * Ingredient additionalIngredients;
+  * -> * Ingredient removedIngredients;
 }
 
-class Customization {
-  enum Type { Add, Remove , Replace }  
-  Type type;
-  * -> * Ingredient ingredients;
-}

@@ -398,9 +398,9 @@ public class PDS implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Order addOrder(Date aDate, float aTotalPrice, Customer aCustomer)
+  public Order addOrder(Date aDate, Customer aCustomer)
   {
-    return new Order(aDate, aTotalPrice, this, aCustomer);
+    return new Order(aDate, this, aCustomer);
   }
 
   public boolean addOrder(Order aOrder)

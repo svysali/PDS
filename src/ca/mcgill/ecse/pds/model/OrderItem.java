@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 43 "../../../../../PDSPersistence.ump"
-// line 94 "../../../../../pds.ump"
+// line 92 "../../../../../pds.ump"
 public class OrderItem implements Serializable
 {
 
@@ -14,26 +14,24 @@ public class OrderItem implements Serializable
   // MEMBER VARIABLES
   //------------------------
 
-  //OrderItem Attributes
-  private float price;
-
   //OrderItem Associations
   private Pizza pizza;
-  private List<Customization> customizations;
+  private List<Ingredient> additionalIngredients;
+  private List<Ingredient> removedIngredients;
   private Order order;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public OrderItem(float aPrice, Pizza aPizza, Order aOrder)
+  public OrderItem(Pizza aPizza, Order aOrder)
   {
-    price = aPrice;
     if (!setPizza(aPizza))
     {
       throw new RuntimeException("Unable to create OrderItem due to aPizza");
     }
-    customizations = new ArrayList<Customization>();
+    additionalIngredients = new ArrayList<Ingredient>();
+    removedIngredients = new ArrayList<Ingredient>();
     boolean didAddOrder = setOrder(aOrder);
     if (!didAddOrder)
     {
@@ -44,52 +42,69 @@ public class OrderItem implements Serializable
   //------------------------
   // INTERFACE
   //------------------------
-
-  public boolean setPrice(float aPrice)
-  {
-    boolean wasSet = false;
-    price = aPrice;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public float getPrice()
-  {
-    return price;
-  }
   /* Code from template association_GetOne */
   public Pizza getPizza()
   {
     return pizza;
   }
   /* Code from template association_GetMany */
-  public Customization getCustomization(int index)
+  public Ingredient getAdditionalIngredient(int index)
   {
-    Customization aCustomization = customizations.get(index);
-    return aCustomization;
+    Ingredient aAdditionalIngredient = additionalIngredients.get(index);
+    return aAdditionalIngredient;
   }
 
-  public List<Customization> getCustomizations()
+  public List<Ingredient> getAdditionalIngredients()
   {
-    List<Customization> newCustomizations = Collections.unmodifiableList(customizations);
-    return newCustomizations;
+    List<Ingredient> newAdditionalIngredients = Collections.unmodifiableList(additionalIngredients);
+    return newAdditionalIngredients;
   }
 
-  public int numberOfCustomizations()
+  public int numberOfAdditionalIngredients()
   {
-    int number = customizations.size();
+    int number = additionalIngredients.size();
     return number;
   }
 
-  public boolean hasCustomizations()
+  public boolean hasAdditionalIngredients()
   {
-    boolean has = customizations.size() > 0;
+    boolean has = additionalIngredients.size() > 0;
     return has;
   }
 
-  public int indexOfCustomization(Customization aCustomization)
+  public int indexOfAdditionalIngredient(Ingredient aAdditionalIngredient)
   {
-    int index = customizations.indexOf(aCustomization);
+    int index = additionalIngredients.indexOf(aAdditionalIngredient);
+    return index;
+  }
+  /* Code from template association_GetMany */
+  public Ingredient getRemovedIngredient(int index)
+  {
+    Ingredient aRemovedIngredient = removedIngredients.get(index);
+    return aRemovedIngredient;
+  }
+
+  public List<Ingredient> getRemovedIngredients()
+  {
+    List<Ingredient> newRemovedIngredients = Collections.unmodifiableList(removedIngredients);
+    return newRemovedIngredients;
+  }
+
+  public int numberOfRemovedIngredients()
+  {
+    int number = removedIngredients.size();
+    return number;
+  }
+
+  public boolean hasRemovedIngredients()
+  {
+    boolean has = removedIngredients.size() > 0;
+    return has;
+  }
+
+  public int indexOfRemovedIngredient(Ingredient aRemovedIngredient)
+  {
+    int index = removedIngredients.indexOf(aRemovedIngredient);
     return index;
   }
   /* Code from template association_GetOne */
@@ -109,74 +124,116 @@ public class OrderItem implements Serializable
     return wasSet;
   }
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfCustomizations()
+  public static int minimumNumberOfAdditionalIngredients()
   {
     return 0;
   }
-  /* Code from template association_AddManyToOne */
-  public Customization addCustomization(Customization.Type aType)
-  {
-    return new Customization(aType, this);
-  }
-
-  public boolean addCustomization(Customization aCustomization)
+  /* Code from template association_AddUnidirectionalMany */
+  public boolean addAdditionalIngredient(Ingredient aAdditionalIngredient)
   {
     boolean wasAdded = false;
-    if (customizations.contains(aCustomization)) { return false; }
-    OrderItem existingOrderItem = aCustomization.getOrderItem();
-    boolean isNewOrderItem = existingOrderItem != null && !this.equals(existingOrderItem);
-    if (isNewOrderItem)
-    {
-      aCustomization.setOrderItem(this);
-    }
-    else
-    {
-      customizations.add(aCustomization);
-    }
+    if (additionalIngredients.contains(aAdditionalIngredient)) { return false; }
+    additionalIngredients.add(aAdditionalIngredient);
     wasAdded = true;
     return wasAdded;
   }
 
-  public boolean removeCustomization(Customization aCustomization)
+  public boolean removeAdditionalIngredient(Ingredient aAdditionalIngredient)
   {
     boolean wasRemoved = false;
-    //Unable to remove aCustomization, as it must always have a orderItem
-    if (!this.equals(aCustomization.getOrderItem()))
+    if (additionalIngredients.contains(aAdditionalIngredient))
     {
-      customizations.remove(aCustomization);
+      additionalIngredients.remove(aAdditionalIngredient);
       wasRemoved = true;
     }
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addCustomizationAt(Customization aCustomization, int index)
+  public boolean addAdditionalIngredientAt(Ingredient aAdditionalIngredient, int index)
   {  
     boolean wasAdded = false;
-    if(addCustomization(aCustomization))
+    if(addAdditionalIngredient(aAdditionalIngredient))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfCustomizations()) { index = numberOfCustomizations() - 1; }
-      customizations.remove(aCustomization);
-      customizations.add(index, aCustomization);
+      if(index > numberOfAdditionalIngredients()) { index = numberOfAdditionalIngredients() - 1; }
+      additionalIngredients.remove(aAdditionalIngredient);
+      additionalIngredients.add(index, aAdditionalIngredient);
       wasAdded = true;
     }
     return wasAdded;
   }
 
-  public boolean addOrMoveCustomizationAt(Customization aCustomization, int index)
+  public boolean addOrMoveAdditionalIngredientAt(Ingredient aAdditionalIngredient, int index)
   {
     boolean wasAdded = false;
-    if(customizations.contains(aCustomization))
+    if(additionalIngredients.contains(aAdditionalIngredient))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfCustomizations()) { index = numberOfCustomizations() - 1; }
-      customizations.remove(aCustomization);
-      customizations.add(index, aCustomization);
+      if(index > numberOfAdditionalIngredients()) { index = numberOfAdditionalIngredients() - 1; }
+      additionalIngredients.remove(aAdditionalIngredient);
+      additionalIngredients.add(index, aAdditionalIngredient);
       wasAdded = true;
     } 
     else 
     {
-      wasAdded = addCustomizationAt(aCustomization, index);
+      wasAdded = addAdditionalIngredientAt(aAdditionalIngredient, index);
+    }
+    return wasAdded;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfRemovedIngredients()
+  {
+    return 0;
+  }
+  /* Code from template association_AddUnidirectionalMany */
+  public boolean addRemovedIngredient(Ingredient aRemovedIngredient)
+  {
+    boolean wasAdded = false;
+    if (removedIngredients.contains(aRemovedIngredient)) { return false; }
+    removedIngredients.add(aRemovedIngredient);
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeRemovedIngredient(Ingredient aRemovedIngredient)
+  {
+    boolean wasRemoved = false;
+    if (removedIngredients.contains(aRemovedIngredient))
+    {
+      removedIngredients.remove(aRemovedIngredient);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addRemovedIngredientAt(Ingredient aRemovedIngredient, int index)
+  {  
+    boolean wasAdded = false;
+    if(addRemovedIngredient(aRemovedIngredient))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfRemovedIngredients()) { index = numberOfRemovedIngredients() - 1; }
+      removedIngredients.remove(aRemovedIngredient);
+      removedIngredients.add(index, aRemovedIngredient);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveRemovedIngredientAt(Ingredient aRemovedIngredient, int index)
+  {
+    boolean wasAdded = false;
+    if(removedIngredients.contains(aRemovedIngredient))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfRemovedIngredients()) { index = numberOfRemovedIngredients() - 1; }
+      removedIngredients.remove(aRemovedIngredient);
+      removedIngredients.add(index, aRemovedIngredient);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addRemovedIngredientAt(aRemovedIngredient, index);
     }
     return wasAdded;
   }
@@ -203,13 +260,8 @@ public class OrderItem implements Serializable
   public void delete()
   {
     pizza = null;
-    while (customizations.size() > 0)
-    {
-      Customization aCustomization = customizations.get(customizations.size() - 1);
-      aCustomization.delete();
-      customizations.remove(aCustomization);
-    }
-    
+    additionalIngredients.clear();
+    removedIngredients.clear();
     Order placeholderOrder = order;
     this.order = null;
     if(placeholderOrder != null)
@@ -217,15 +269,7 @@ public class OrderItem implements Serializable
       placeholderOrder.removeOrderItem(this);
     }
   }
-
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "price" + ":" + getPrice()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "pizza = "+(getPizza()!=null?Integer.toHexString(System.identityHashCode(getPizza())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "order = "+(getOrder()!=null?Integer.toHexString(System.identityHashCode(getOrder())):"null");
-  }  
+  
   //------------------------
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------

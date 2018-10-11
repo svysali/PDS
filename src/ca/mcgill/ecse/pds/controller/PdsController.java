@@ -100,4 +100,16 @@ public class PdsController {
 			throw new InvalidInputException(e.getMessage());
 		}
 	}
+	
+	public static void updateMenuPizza(MenuPizza menupizza,float price,float calorieCount,Ingredient[] ingredients) throws InvalidInputException {
+		try {
+			menupizza.setPrice(price);
+			menupizza.setCalorieCount(calorieCount);
+			menupizza.setIngredients(ingredients);
+			PdsApplication.save();
+		}
+		catch (RuntimeException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
+	}
 }

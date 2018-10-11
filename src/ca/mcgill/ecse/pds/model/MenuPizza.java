@@ -122,11 +122,6 @@ public class MenuPizza extends Pizza implements Serializable
     super.delete();
   }
 
-  // line 52 "../../../../../pds.ump"
-  public float getPrice(){
-    return super.getPrice();
-  }
-
 
   public String toString()
   {
