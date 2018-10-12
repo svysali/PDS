@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import ca.mcgill.ecse.pds.application.PdsApplication;
+import ca.mcgill.ecse.pds.model.Customer;
 import ca.mcgill.ecse.pds.model.Ingredient;
 import ca.mcgill.ecse.pds.model.MenuPizza;
 import ca.mcgill.ecse.pds.model.PDS;
@@ -99,10 +100,35 @@ public class PdsController {
 		catch (RuntimeException e) {
 			throw new InvalidInputException(e.getMessage());
 		}
-	}
+	}	
+	//ALL customer related methods
 	
-	public static void updateMenuPizza(MenuPizza menupizza,float newPrice,float newCalorieCount,Ingredient[] ingredients) throws InvalidInputException {
+	public static void createCustomer(String name,String phoneNumber,String emailAddress, String deliveryAddress) throws InvalidInputException {
+		String error = "";
+		PDS pds = PdsApplication.getPDS();
+		if (name == null || deliveryAddress==null || name == "" || deliveryAddress=="" ){
+			error = error + "Customer Fields cannot be left blank \n";	
+		}
 		try {
+			pds.addCustomer(name,phoneNumber, emailAddress, deliveryAddress);
+			PdsApplication.save();
+			}
+			catch (RuntimeException e) {
+				throw new InvalidInputException(e.getMessage());
+			}
+		}
+	
+	public static void deleteCustomer(Customer customer) throws InvalidInputException {
+		customer.delete();
+		try {
+			PdsApplication.save();
+		}
+		catch (RuntimeException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
+	}
+	public static void updateMenuPizza(MenuPizza menupizza,float newPrice,float newCalorieCount,Ingredient[] ingredients) throws InvalidInputException {
+		
 			menupizza.setPrice(newPrice);
 			menupizza.setCalorieCount(newCalorieCount);
 			for(Ingredient i:menupizza.getIngredients()) {
@@ -111,6 +137,44 @@ public class PdsController {
 			for(Ingredient i:ingredients) {
 				menupizza.addIngredient(i);
 			}
+			try {
+				PdsApplication.save();
+			}
+			catch (RuntimeException e) {
+				throw new InvalidInputException(e.getMessage());
+			}
+	}		
+	
+	public static List<Customer> getCustomers() {
+		return PdsApplication.getPDS().getCustomers();
+	}
+	
+	public static void updateCustomer(String name,String phoneNumber,String emailAddress, String deliveryAddress) throws InvalidInputException {
+		String error = "";
+		PDS pds = PdsApplication.getPDS();
+		Customer foundCustomer = null;
+		for (Customer customer : pds.getCustomers()) {
+			if (customer.getName() == name) {
+				foundCustomer = customer;
+				break;
+			}
+		}
+		if(foundCustomer == null) {
+			error = error + "Could not find Customer:" + name + "\n";	
+		}
+		if(phoneNumber == ""  && emailAddress == "" || phoneNumber == null  && emailAddress == null ) {
+			error = error + "Either an email address or Phone number is required as contact information";
+		}
+		
+		if (error.length() > 0) {
+			throw new InvalidInputException(error.trim());
+		}
+		foundCustomer.setName(name);
+		foundCustomer.setPhoneNumber(phoneNumber);
+		foundCustomer.setEmailAddress(emailAddress);
+		foundCustomer.setDeliveryAddress(deliveryAddress);
+		
+		try {
 			PdsApplication.save();
 		}
 		catch (RuntimeException e) {

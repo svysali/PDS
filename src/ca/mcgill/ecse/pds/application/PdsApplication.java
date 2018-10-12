@@ -35,6 +35,13 @@ public class PdsApplication {
 			System.out.println(mpizza.toString());
 		}
 		System.out.println("========================");
+		
+		System.out.println("Number of Customers: " + pds.getCustomers().size());
+		for (Customer customer : pds.getCustomers()) {
+			System.out.println("Customer: " + customer.getName() + " / Address: " + customer.getDeliveryAddress());
+		}
+		
+		System.out.println("========================");
 	}
 	
 	public static PDS getPDS() {
