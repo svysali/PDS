@@ -9,8 +9,8 @@ import java.util.*;
  * Pizza abstract
  */
 // line 71 "../../../../../PDSPersistence.ump"
-// line 19 "../../../../../pds.ump"
-public class Pizza implements Serializable
+// line 20 "../../../../../pds.ump"
+public abstract class Pizza implements Serializable
 {
 
   //------------------------
@@ -29,9 +29,9 @@ public class Pizza implements Serializable
   // CONSTRUCTOR
   //------------------------
 
-  public Pizza(float aPrice, PDS aPDS, Ingredient... allIngredients)
+  public Pizza(float aPrice, PDS aPDS)
   {
-    // line 25 "../../../../../pds.ump"
+    // line 26 "../../../../../pds.ump"
     if (aPrice <= 0.0f ) {
     	  throw new RuntimeException("The price for a pizza cannot be less than zero.");
     	}
@@ -39,11 +39,6 @@ public class Pizza implements Serializable
     size = 12;
     price = aPrice;
     ingredients = new ArrayList<Ingredient>();
-    boolean didAddIngredients = setIngredients(allIngredients);
-    if (!didAddIngredients)
-    {
-      throw new RuntimeException("Unable to create Pizza, must have at least 1 ingredients");
-    }
     boolean didAddPDS = setPDS(aPDS);
     if (!didAddPDS)
     {
@@ -66,7 +61,7 @@ public class Pizza implements Serializable
   public boolean setPrice(float aPrice)
   {
     boolean wasSet = false;
-    // line 25 "../../../../../pds.ump"
+    // line 26 "../../../../../pds.ump"
     if (aPrice <= 0.0f ) {
     	  throw new RuntimeException("The price for a pizza cannot be less than zero.");
     	}
@@ -76,9 +71,6 @@ public class Pizza implements Serializable
     return wasSet;
   }
 
-  /**
-   * abstract;
-   */
   public int getSize()
   {
     return size;
@@ -126,9 +118,9 @@ public class Pizza implements Serializable
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfIngredients()
   {
-    return 1;
+    return 0;
   }
-  /* Code from template association_AddUnidirectionalMStar */
+  /* Code from template association_AddUnidirectionalMany */
   public boolean addIngredient(Ingredient aIngredient)
   {
     boolean wasAdded = false;
@@ -141,43 +133,12 @@ public class Pizza implements Serializable
   public boolean removeIngredient(Ingredient aIngredient)
   {
     boolean wasRemoved = false;
-    if (!ingredients.contains(aIngredient))
+    if (ingredients.contains(aIngredient))
     {
-      return wasRemoved;
+      ingredients.remove(aIngredient);
+      wasRemoved = true;
     }
-
-    if (numberOfIngredients() <= minimumNumberOfIngredients())
-    {
-      return wasRemoved;
-    }
-
-    ingredients.remove(aIngredient);
-    wasRemoved = true;
     return wasRemoved;
-  }
-  /* Code from template association_SetUnidirectionalMStar */
-  public boolean setIngredients(Ingredient... newIngredients)
-  {
-    boolean wasSet = false;
-    ArrayList<Ingredient> verifiedIngredients = new ArrayList<Ingredient>();
-    for (Ingredient aIngredient : newIngredients)
-    {
-      if (verifiedIngredients.contains(aIngredient))
-      {
-        continue;
-      }
-      verifiedIngredients.add(aIngredient);
-    }
-
-    if (verifiedIngredients.size() != newIngredients.length || verifiedIngredients.size() < minimumNumberOfIngredients())
-    {
-      return wasSet;
-    }
-
-    ingredients.clear();
-    ingredients.addAll(verifiedIngredients);
-    wasSet = true;
-    return wasSet;
   }
   /* Code from template association_AddIndexControlFunctions */
   public boolean addIngredientAt(Ingredient aIngredient, int index)

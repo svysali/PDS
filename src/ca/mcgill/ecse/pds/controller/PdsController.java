@@ -75,7 +75,7 @@ public class PdsController {
 	public static void createMenuPizza(String name,float calorieCount,float price,Ingredient... ingredients) throws InvalidInputException {
 		PDS pds = PdsApplication.getPDS();
 		try {
-			MenuPizza newMenuPizza = new MenuPizza(price, pds, name, calorieCount, pds.getMenu(),ingredients);
+			MenuPizza newMenuPizza = new MenuPizza(price, pds, name, calorieCount, pds.getMenu());
 			for (Ingredient aIngredient : ingredients) {
 				newMenuPizza.addIngredient(aIngredient);
 			}
@@ -105,7 +105,11 @@ public class PdsController {
 		try {
 			menupizza.setPrice(price);
 			menupizza.setCalorieCount(calorieCount);
-			menupizza.setIngredients(ingredients);
+			for (Ingredient aIngredient : ingredients) {
+				if(menupizza.indexOfIngredient(aIngredient) != -1) {
+					menupizza.addIngredient(aIngredient);
+				}
+			}	
 			PdsApplication.save();
 		}
 		catch (RuntimeException e) {

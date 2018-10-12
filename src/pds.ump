@@ -11,26 +11,27 @@ class PDS {
  1 <@>- * Pizza pizzas;
  1 <@>- * Customer customers;
  1 <@>- * Ingredient ingredients;
+ * -> * Ingredient commonIngredients;
  1 <@>- * Order orders;
  1 <@>- 1 Menu menu;
 }
 
 //Pizza abstract
 class Pizza {
-  //abstract;
+  abstract;
   Integer size = 12;
-  * -> 1..* Ingredient ingredients;
+  * -> * Ingredient ingredients;
   Float price;
   before constructor, setPrice {
     if (aPrice <= 0.0f ) {
 	  throw new RuntimeException("The price for a pizza cannot be less than zero.");
 	}
   }
-  //abstract float getPrice();
 }
 
 class Menu {
  1 <@>- * MenuPizza menupizzas;
+ 1 <@>- 0..1 CustomPizza custompizza;
 }
 
 class MenuPizza {
@@ -87,11 +88,17 @@ class Order {
   Integer quantity = 1;
   Boolean isDelivered = false;
   1 <@>- * OrderItem orderItem;
+  public float calculateTotal() {
+  	return 0.0f;
+  }	
 }
 
 class OrderItem {
   * -> 1 Pizza pizza;
   * -> * Ingredient additionalIngredients;
   * -> * Ingredient removedIngredients;
+  public float calculateCost() {
+  	return 0.0f;
+  }
 }
 

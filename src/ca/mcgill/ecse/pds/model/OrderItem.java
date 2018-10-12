@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 43 "../../../../../PDSPersistence.ump"
-// line 92 "../../../../../pds.ump"
+// line 96 "../../../../../pds.ump"
 public class OrderItem implements Serializable
 {
 
@@ -268,6 +268,11 @@ public class OrderItem implements Serializable
     {
       placeholderOrder.removeOrderItem(this);
     }
+  }
+
+  // line 101 "../../../../../pds.ump"
+   public float calculateCost(){
+    return 0.0f;
   }
   
   //------------------------

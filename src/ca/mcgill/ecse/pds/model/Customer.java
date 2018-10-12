@@ -7,7 +7,7 @@ import java.util.*;
 import java.sql.Date;
 
 // line 55 "../../../../../PDSPersistence.ump"
-// line 70 "../../../../../pds.ump"
+// line 71 "../../../../../pds.ump"
 public class Customer implements Serializable
 {
 
@@ -40,7 +40,7 @@ public class Customer implements Serializable
 
   public Customer(String aName, String aPhoneNumber, String aEmailAddress, String aDeliveryAddress, PDS aPDS)
   {
-    // line 77 "../../../../../pds.ump"
+    // line 78 "../../../../../pds.ump"
     if ((aPhoneNumber == null || aPhoneNumber.length() == 0 ) && (aEmailAddress == null || aEmailAddress.length() == 0)) {
     	  throw new RuntimeException("PhoneNumber or Email Address must be provided");
     	}

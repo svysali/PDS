@@ -16,6 +16,7 @@ public class Menu implements Serializable
 
   //Menu Associations
   private List<MenuPizza> menupizzas;
+  private CustomPizza custompizza;
   private PDS pDS;
 
   //------------------------
@@ -72,6 +73,17 @@ public class Menu implements Serializable
     return index;
   }
   /* Code from template association_GetOne */
+  public CustomPizza getCustompizza()
+  {
+    return custompizza;
+  }
+
+  public boolean hasCustompizza()
+  {
+    boolean has = custompizza != null;
+    return has;
+  }
+  /* Code from template association_GetOne */
   public PDS getPDS()
   {
     return pDS;
@@ -82,9 +94,9 @@ public class Menu implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public MenuPizza addMenupizza(float aPrice, PDS aPDS, String aName, float aCalorieCount, Ingredient... allIngredients)
+  public MenuPizza addMenupizza(float aPrice, PDS aPDS, String aName, float aCalorieCount)
   {
-    return new MenuPizza(aPrice, aPDS, aName, aCalorieCount, this, allIngredients);
+    return new MenuPizza(aPrice, aPDS, aName, aCalorieCount, this);
   }
 
   public boolean addMenupizza(MenuPizza aMenupizza)
@@ -148,6 +160,33 @@ public class Menu implements Serializable
     }
     return wasAdded;
   }
+  /* Code from template association_SetOptionalOneToOne */
+  public boolean setCustompizza(CustomPizza aNewCustompizza)
+  {
+    boolean wasSet = false;
+    if (custompizza != null && !custompizza.equals(aNewCustompizza) && equals(custompizza.getMenu()))
+    {
+      //Unable to setCustompizza, as existing custompizza would become an orphan
+      return wasSet;
+    }
+
+    custompizza = aNewCustompizza;
+    Menu anOldMenu = aNewCustompizza != null ? aNewCustompizza.getMenu() : null;
+
+    if (!this.equals(anOldMenu))
+    {
+      if (anOldMenu != null)
+      {
+        anOldMenu.custompizza = null;
+      }
+      if (custompizza != null)
+      {
+        custompizza.setMenu(this);
+      }
+    }
+    wasSet = true;
+    return wasSet;
+  }
 
   public void delete()
   {
@@ -158,6 +197,13 @@ public class Menu implements Serializable
       menupizzas.remove(aMenupizza);
     }
     
+    CustomPizza existingCustompizza = custompizza;
+    custompizza = null;
+    if (existingCustompizza != null)
+    {
+      existingCustompizza.delete();
+      existingCustompizza.setMenu(null);
+    }
     PDS existingPDS = pDS;
     pDS = null;
     if (existingPDS != null)

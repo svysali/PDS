@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.util.*;
 
 // line 26 "../../../../../PDSPersistence.ump"
-// line 84 "../../../../../pds.ump"
+// line 85 "../../../../../pds.ump"
 public class Order implements Serializable
 {
 
@@ -292,6 +292,11 @@ public class Order implements Serializable
       }
     }
     nextNumber++;
+  }
+
+  // line 92 "../../../../../pds.ump"
+   public float calculateTotal(){
+    return 0.0f;
   }
 
 

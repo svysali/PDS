@@ -19,6 +19,7 @@ public class PDS implements Serializable
   private List<Pizza> pizzas;
   private List<Customer> customers;
   private List<Ingredient> ingredients;
+  private List<Ingredient> commonIngredients;
   private List<Order> orders;
   private Menu menu;
 
@@ -31,6 +32,7 @@ public class PDS implements Serializable
     pizzas = new ArrayList<Pizza>();
     customers = new ArrayList<Customer>();
     ingredients = new ArrayList<Ingredient>();
+    commonIngredients = new ArrayList<Ingredient>();
     orders = new ArrayList<Order>();
     if (aMenu == null || aMenu.getPDS() != null)
     {
@@ -44,6 +46,7 @@ public class PDS implements Serializable
     pizzas = new ArrayList<Pizza>();
     customers = new ArrayList<Customer>();
     ingredients = new ArrayList<Ingredient>();
+    commonIngredients = new ArrayList<Ingredient>();
     orders = new ArrayList<Order>();
     menu = new Menu(this);
   }
@@ -142,6 +145,36 @@ public class PDS implements Serializable
     return index;
   }
   /* Code from template association_GetMany */
+  public Ingredient getCommonIngredient(int index)
+  {
+    Ingredient aCommonIngredient = commonIngredients.get(index);
+    return aCommonIngredient;
+  }
+
+  public List<Ingredient> getCommonIngredients()
+  {
+    List<Ingredient> newCommonIngredients = Collections.unmodifiableList(commonIngredients);
+    return newCommonIngredients;
+  }
+
+  public int numberOfCommonIngredients()
+  {
+    int number = commonIngredients.size();
+    return number;
+  }
+
+  public boolean hasCommonIngredients()
+  {
+    boolean has = commonIngredients.size() > 0;
+    return has;
+  }
+
+  public int indexOfCommonIngredient(Ingredient aCommonIngredient)
+  {
+    int index = commonIngredients.indexOf(aCommonIngredient);
+    return index;
+  }
+  /* Code from template association_GetMany */
   public Order getOrder(int index)
   {
     Order aOrder = orders.get(index);
@@ -182,10 +215,7 @@ public class PDS implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Pizza addPizza(float aPrice, Ingredient... allIngredients)
-  {
-    return new Pizza(aPrice, this, allIngredients);
-  }
+
 
   public boolean addPizza(Pizza aPizza)
   {
@@ -393,6 +423,63 @@ public class PDS implements Serializable
     return wasAdded;
   }
   /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfCommonIngredients()
+  {
+    return 0;
+  }
+  /* Code from template association_AddUnidirectionalMany */
+  public boolean addCommonIngredient(Ingredient aCommonIngredient)
+  {
+    boolean wasAdded = false;
+    if (commonIngredients.contains(aCommonIngredient)) { return false; }
+    commonIngredients.add(aCommonIngredient);
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeCommonIngredient(Ingredient aCommonIngredient)
+  {
+    boolean wasRemoved = false;
+    if (commonIngredients.contains(aCommonIngredient))
+    {
+      commonIngredients.remove(aCommonIngredient);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addCommonIngredientAt(Ingredient aCommonIngredient, int index)
+  {  
+    boolean wasAdded = false;
+    if(addCommonIngredient(aCommonIngredient))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfCommonIngredients()) { index = numberOfCommonIngredients() - 1; }
+      commonIngredients.remove(aCommonIngredient);
+      commonIngredients.add(index, aCommonIngredient);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveCommonIngredientAt(Ingredient aCommonIngredient, int index)
+  {
+    boolean wasAdded = false;
+    if(commonIngredients.contains(aCommonIngredient))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfCommonIngredients()) { index = numberOfCommonIngredients() - 1; }
+      commonIngredients.remove(aCommonIngredient);
+      commonIngredients.add(index, aCommonIngredient);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addCommonIngredientAt(aCommonIngredient, index);
+    }
+    return wasAdded;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfOrders()
   {
     return 0;
@@ -488,6 +575,7 @@ public class PDS implements Serializable
       ingredients.remove(aIngredient);
     }
     
+    commonIngredients.clear();
     while (orders.size() > 0)
     {
       Order aOrder = orders.get(orders.size() - 1);
