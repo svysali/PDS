@@ -42,6 +42,8 @@ import javax.swing.JTable;
 import java.awt.CardLayout;
 import javax.swing.SwingConstants;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+
 import java.awt.GridLayout;
 import javax.swing.JTextPane;
 
@@ -488,8 +490,6 @@ public class PdsPage extends JFrame {
 	}
 
 	private void refreshIngredientData() {
-		// error
-		ingredientErrorMessage.setText(error);
 		if (error == null || error.length() == 0) {
 
 			// Update all text fields
@@ -1195,26 +1195,30 @@ public class PdsPage extends JFrame {
 		if (error.length() == 0) {
 			try {
 				PdsController.createIngredient(fldNewIngredient.getText(), convertStringToFloat(fldNewIngredientPrice.getText()));
+				JOptionPane.showMessageDialog(contentPanel, "Ingredient " + fldNewIngredient.getText() + " was added!" );
 			} catch (InvalidInputException e) {
 				error = e.getMessage();
+				JOptionPane.showMessageDialog(contentPanel,"Could not create Ingredient " + error.trim() , "Error", JOptionPane.ERROR_MESSAGE); 
 			}
-		}	
+		}
 		// update visuals
 		refreshIngredientData();
 	}
-
 	private void removeIngredientButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		// clear error message and basic input validation
 		error = "";
-		if (selectedRemoveIngredient < 0)
+		if (selectedRemoveIngredient < 0) {
 			error = "An Ingredient needs to be selected for deletion!";
-
+			JOptionPane.showMessageDialog(contentPanel, error.trim() , "Error", JOptionPane.ERROR_MESSAGE); 
+		}	
 		if (error.length() == 0) {
 			// call the controller
 			try {
 				PdsController.deleteIngredient(ingredients.get(selectedRemoveIngredient));
+				JOptionPane.showMessageDialog(contentPanel, "Ingredient " + ingredients.get(selectedRemoveIngredient).getName() + " was deleted!" );
 			} catch (InvalidInputException e) {
 				error = e.getMessage();
+				JOptionPane.showMessageDialog(contentPanel,"Could not delete Ingredient " + error.trim() , "Error", JOptionPane.ERROR_MESSAGE); 
 			}
 		}
 		// update visuals
@@ -1223,16 +1227,20 @@ public class PdsPage extends JFrame {
 
 	private void updateIngredientButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		error = "";
-		if (selectedUpdateIngredient < 0)
+		if (selectedUpdateIngredient < 0) {
 			error = "An Ingredient needs to be selected for update!";
+			JOptionPane.showMessageDialog(contentPanel, error.trim() , "Error", JOptionPane.ERROR_MESSAGE);
+		}		
 		if (error.length() == 0) {
 			// call the controller
 			Ingredient selectedIngredient = ingredients.get(selectedUpdateIngredient);
 			float newPrice = convertStringToFloat(fldUpdatedPrice.getText());
 			try {
 				PdsController.updateIngredient(selectedIngredient.getName(),newPrice);
+				JOptionPane.showMessageDialog(contentPanel, "Ingredient " + ingredients.get(selectedUpdateIngredient).getName() + " was updated!" );
 			} catch (InvalidInputException e) {
 				error = e.getMessage();
+				JOptionPane.showMessageDialog(contentPanel,"Could not update Ingredient " + error.trim() , "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		// update visuals
