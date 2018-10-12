@@ -101,15 +101,16 @@ public class PdsController {
 		}
 	}
 	
-	public static void updateMenuPizza(MenuPizza menupizza,float price,float calorieCount,Ingredient[] ingredients) throws InvalidInputException {
+	public static void updateMenuPizza(MenuPizza menupizza,float newPrice,float newCalorieCount,Ingredient[] ingredients) throws InvalidInputException {
 		try {
-			menupizza.setPrice(price);
-			menupizza.setCalorieCount(calorieCount);
-			for (Ingredient aIngredient : ingredients) {
-				if(menupizza.indexOfIngredient(aIngredient) != -1) {
-					menupizza.addIngredient(aIngredient);
-				}
-			}	
+			menupizza.setPrice(newPrice);
+			menupizza.setCalorieCount(newCalorieCount);
+			for(Ingredient i:menupizza.getIngredients()) {
+				menupizza.removeIngredient(i);
+			}
+			for(Ingredient i:ingredients) {
+				menupizza.addIngredient(i);
+			}
 			PdsApplication.save();
 		}
 		catch (RuntimeException e) {
