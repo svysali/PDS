@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 83 "../../../../../PDSPersistence.ump"
-// line 53 "../../../../../pds.ump"
+// line 52 "../../../../../pds.ump"
 public class CustomPizza extends Pizza implements Serializable
 {
 
@@ -21,9 +21,9 @@ public class CustomPizza extends Pizza implements Serializable
   // CONSTRUCTOR
   //------------------------
 
-  public CustomPizza(float aPrice, PDS aPDS, Menu aMenu)
+  public CustomPizza(float aPrice, PDS aPDS, Menu aMenu, Ingredient... allIngredients)
   {
-    super(aPrice, aPDS);
+    super(aPrice, aPDS, allIngredients);
     boolean didAddMenu = setMenu(aMenu);
     if (!didAddMenu)
     {

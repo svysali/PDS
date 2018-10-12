@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 43 "../../../../../PDSPersistence.ump"
-// line 96 "../../../../../pds.ump"
+// line 99 "../../../../../pds.ump"
 public class OrderItem implements Serializable
 {
 
@@ -237,11 +237,17 @@ public class OrderItem implements Serializable
     }
     return wasAdded;
   }
-  /* Code from template association_SetOneToMany */
+  /* Code from template association_SetOneToMandatoryMany */
   public boolean setOrder(Order aOrder)
   {
     boolean wasSet = false;
+    //Must provide order to orderItem
     if (aOrder == null)
+    {
+      return wasSet;
+    }
+
+    if (order != null && order.numberOfOrderItems() <= Order.minimumNumberOfOrderItems())
     {
       return wasSet;
     }
@@ -250,7 +256,12 @@ public class OrderItem implements Serializable
     order = aOrder;
     if (existingOrder != null && !existingOrder.equals(aOrder))
     {
-      existingOrder.removeOrderItem(this);
+      boolean didRemove = existingOrder.removeOrderItem(this);
+      if (!didRemove)
+      {
+        order = existingOrder;
+        return wasSet;
+      }
     }
     order.addOrderItem(this);
     wasSet = true;
@@ -270,9 +281,19 @@ public class OrderItem implements Serializable
     }
   }
 
-  // line 101 "../../../../../pds.ump"
-   public float calculateCost(){
-    return 0.0f;
+  // line 104 "../../../../../pds.ump"
+   public float getCost(){
+    float cost = 0;
+  	float additionalIngredientsCost = 0;
+  	float removedIngredientsReductionValue = 0;
+  	for(Ingredient i: this.getAdditionalIngredients()){
+  		removedIngredientsReductionValue += i.getPrice(); 
+  	}
+  	for(Ingredient i: this.getRemovedIngredients()){
+  		removedIngredientsReductionValue += i.getPrice(); 
+  	}
+  	cost = pizza.getPrice() + removedIngredientsReductionValue + (0.5f * removedIngredientsReductionValue);
+  	return cost;
   }
   
   //------------------------

@@ -920,7 +920,12 @@ public class PdsPage extends JFrame {
 		JButton btnEditPizzaAddIngredient = new JButton("Add >");
 		JButton btnEditPizzaRemoveIngredient = new JButton("< Remove");
 		JButton btnEditPizzaBack = new JButton("Back");
-		JButton btnEdiPizzaSave = new JButton("Save");
+		JButton btnEditPizzaSave = new JButton("Save");
+		btnEditPizzaSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				updateMenuPizzaButtonActionPerformed(e);
+			}	
+		});
 
 		editPizzaAvailableList.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
@@ -1019,7 +1024,7 @@ public class PdsPage extends JFrame {
 														.addPreferredGap(ComponentPlacement.RELATED)
 														.addComponent(btnEditPizzaBack)
 														.addPreferredGap(ComponentPlacement.UNRELATED)
-														.addComponent(btnEdiPizzaSave)))
+														.addComponent(btnEditPizzaSave)))
 										.addPreferredGap(ComponentPlacement.RELATED)))
 						.addGap(36))
 				);
@@ -1056,7 +1061,7 @@ public class PdsPage extends JFrame {
 						.addGap(18)
 						.addGroup(gl_editMenuPizzaPanel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(btnEditPizzaBack)
-								.addComponent(btnEdiPizzaSave)
+								.addComponent(btnEditPizzaSave)
 								.addComponent(editPizzaErrorMessage))
 						.addContainerGap())
 				);
@@ -1239,7 +1244,7 @@ public class PdsPage extends JFrame {
 		error = "";
 		Float price = convertStringToFloat(fldNewMenuPizzaPrice.getText());
 		Float calorieCount = convertStringToFloat(fldNewMenuPizzaCalorieCount.getText());
-		ArrayList<Ingredient> ingredientList = new ArrayList<Ingredient>();
+		Ingredient[] addedIngredientArray = new Ingredient[addedListModel.getSize()];
 		Integer nrOfIngredients = 0;
 		//Maybe we can check if price of pizza is greater than price off all Ingredients here
 		if(price < 0) {
@@ -1251,14 +1256,15 @@ public class PdsPage extends JFrame {
 		if(addedListModel.isEmpty()) {
 			error = "Atleast one ingredient must be added";
 		} else {
-			for (int i = 0; i < addedListModel.getSize() ; i++) {
-				ingredientList.add(addedListModel.getElementAt(i));
+			for(int i=0;i<addedListModel.getSize();i++) {
+				Ingredient ingredient = (Ingredient) addedListModel.getElementAt(i);
+				addedIngredientArray[i] = ingredient;
 			}
 		}
 
 		if (error.length() == 0) {
 			try {
-				PdsController.createMenuPizza(fldNewMenuPizzaName.getText(),calorieCount,price,ingredientList.toArray(new Ingredient[ingredientList.size()]));
+				PdsController.createMenuPizza(fldNewMenuPizzaName.getText(),calorieCount,price,addedIngredientArray);
 			} catch (InvalidInputException e) {
 				error = e.getMessage();
 			}
@@ -1285,23 +1291,31 @@ public class PdsPage extends JFrame {
 
 	private void updateMenuPizzaButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		//delete the pizza
+		String error = "";
 		MenuPizza pizzaToEdit = menuPizzas.get(selectedEditPizzaIndex);
 		Float price = convertStringToFloat(fldEditPizzaPrice.getText());
 		Float calorieCount = convertStringToFloat(fldEditPizzaCalorieCount.getText());
+		Ingredient[] editedIngredientArray = new Ingredient[editPizzaAddedListModel.getSize()];
+		
+		if(selectedEditPizzaIndex<0) {
+			error = "Select a pizza to update!";
+		}
 		if(price <= 0) {
 			error = "Price cannot be less than zero";
 		}
 		if(calorieCount <= 0) {
 			error = "Calorie Count cannot be less than Zero";
 		}
-		if(editPizzaAddedListModel.isEmpty()) {
-			error = "Atleast one ingredient must be added";
+		for(int i=0;i<editPizzaAddedListModel.getSize();i++) {
+			Ingredient ingredient = (Ingredient) editPizzaAddedListModel.getElementAt(i);
+			editedIngredientArray[i] = ingredient;
 		}
 		if (error.length() == 0) {
 			try {
-				PdsController.updateMenuPizza(pizzaToEdit,price,calorieCount,(Ingredient[]) editPizzaAddedListModel.toArray());
+				PdsController.updateMenuPizza(pizzaToEdit.getName(),price,calorieCount,editedIngredientArray);
 			} catch (InvalidInputException e) {
 				error = e.getMessage();
+				System.out.println("FINAL ERROR:" + error);
 			}
 		}
 	}

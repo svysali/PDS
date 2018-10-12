@@ -3,11 +3,13 @@ package ca.mcgill.ecse.pds.controller;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
 import ca.mcgill.ecse.pds.application.PdsApplication;
 import ca.mcgill.ecse.pds.model.Customer;
 import ca.mcgill.ecse.pds.model.Ingredient;
+import ca.mcgill.ecse.pds.model.Menu;
 import ca.mcgill.ecse.pds.model.MenuPizza;
 import ca.mcgill.ecse.pds.model.PDS;
 import ca.mcgill.ecse.pds.model.Pizza;
@@ -76,10 +78,7 @@ public class PdsController {
 	public static void createMenuPizza(String name,float calorieCount,float price,Ingredient... ingredients) throws InvalidInputException {
 		PDS pds = PdsApplication.getPDS();
 		try {
-			MenuPizza newMenuPizza = new MenuPizza(price, pds, name, calorieCount, pds.getMenu());
-			for (Ingredient aIngredient : ingredients) {
-				newMenuPizza.addIngredient(aIngredient);
-			}
+			MenuPizza newMenuPizza = new MenuPizza(price, pds, name, calorieCount, pds.getMenu(),ingredients);
 			pds.addPizza(newMenuPizza);
 			PdsApplication.save();
 		}
@@ -87,7 +86,6 @@ public class PdsController {
 			throw new InvalidInputException(e.getMessage());
 		}
 	}
-	
 	public static List<MenuPizza> getMenuPizzas() {
 		return PdsApplication.getPDS().getMenu().getMenupizzas();
 	}
@@ -100,7 +98,34 @@ public class PdsController {
 		catch (RuntimeException e) {
 			throw new InvalidInputException(e.getMessage());
 		}
-	}	
+	}
+	public static void updateMenuPizza(String name,float price,float calorieCount,Ingredient... ingredients) throws InvalidInputException {
+		String error = "";
+		PDS pds = PdsApplication.getPDS();
+		MenuPizza foundMenuPizza = null;
+		for (MenuPizza menupizza : pds.getMenu().getMenupizzas()) {
+			if (menupizza.getName() == name) {
+				foundMenuPizza = menupizza;
+				break;
+			}
+		}
+		if(foundMenuPizza == null) {
+			error = error + "Could not find Ingredient:" + name + "\n";	
+			System.out.println(error);
+		}
+		foundMenuPizza.setName(name);
+		foundMenuPizza.setPrice(price);
+		foundMenuPizza.setCalorieCount(calorieCount);
+		foundMenuPizza.setIngredients(ingredients);
+		
+		
+		try {
+			PdsApplication.save();
+		}
+		catch (RuntimeException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
+	}
 	//ALL customer related methods
 	
 	public static void createCustomer(String name,String phoneNumber,String emailAddress, String deliveryAddress) throws InvalidInputException {
@@ -112,11 +137,12 @@ public class PdsController {
 		try {
 			pds.addCustomer(name,phoneNumber, emailAddress, deliveryAddress);
 			PdsApplication.save();
-			}
-			catch (RuntimeException e) {
-				throw new InvalidInputException(e.getMessage());
-			}
 		}
+		catch (RuntimeException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
+	}
+	
 	
 	public static void deleteCustomer(Customer customer) throws InvalidInputException {
 		customer.delete();
@@ -126,23 +152,6 @@ public class PdsController {
 		catch (RuntimeException e) {
 			throw new InvalidInputException(e.getMessage());
 		}
-	}
-	public static void updateMenuPizza(MenuPizza menupizza,float newPrice,float newCalorieCount,Ingredient[] ingredients) throws InvalidInputException {
-		
-			menupizza.setPrice(newPrice);
-			menupizza.setCalorieCount(newCalorieCount);
-			for(Ingredient i:menupizza.getIngredients()) {
-				menupizza.removeIngredient(i);
-			}
-			for(Ingredient i:ingredients) {
-				menupizza.addIngredient(i);
-			}
-			try {
-				PdsApplication.save();
-			}
-			catch (RuntimeException e) {
-				throw new InvalidInputException(e.getMessage());
-			}
 	}		
 	
 	public static List<Customer> getCustomers() {

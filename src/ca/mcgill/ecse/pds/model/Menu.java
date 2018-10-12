@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 15 "../../../../../PDSPersistence.ump"
-// line 32 "../../../../../pds.ump"
+// line 31 "../../../../../pds.ump"
 public class Menu implements Serializable
 {
 
@@ -94,9 +94,9 @@ public class Menu implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public MenuPizza addMenupizza(float aPrice, PDS aPDS, String aName, float aCalorieCount)
+  public MenuPizza addMenupizza(float aPrice, PDS aPDS, String aName, float aCalorieCount, Ingredient... allIngredients)
   {
-    return new MenuPizza(aPrice, aPDS, aName, aCalorieCount, this);
+    return new MenuPizza(aPrice, aPDS, aName, aCalorieCount, this, allIngredients);
   }
 
   public boolean addMenupizza(MenuPizza aMenupizza)

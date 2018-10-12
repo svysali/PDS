@@ -215,7 +215,10 @@ public class PDS implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-
+  public Pizza addPizza(float aPrice, Ingredient... allIngredients)
+  {
+    return new Pizza(aPrice, this, allIngredients);
+  }
 
   public boolean addPizza(Pizza aPizza)
   {

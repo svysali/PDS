@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.util.*;
 
 // line 26 "../../../../../PDSPersistence.ump"
-// line 85 "../../../../../pds.ump"
+// line 84 "../../../../../pds.ump"
 public class Order implements Serializable
 {
 
@@ -30,7 +30,7 @@ public class Order implements Serializable
   private int number;
 
   //Order Associations
-  private List<OrderItem> orderItem;
+  private List<OrderItem> orderItems;
   private PDS pDS;
   private Customer customer;
 
@@ -44,7 +44,7 @@ public class Order implements Serializable
     quantity = 1;
     isDelivered = false;
     number = nextNumber++;
-    orderItem = new ArrayList<OrderItem>();
+    orderItems = new ArrayList<OrderItem>();
     boolean didAddPDS = setPDS(aPDS);
     if (!didAddPDS)
     {
@@ -112,31 +112,31 @@ public class Order implements Serializable
   /* Code from template association_GetMany */
   public OrderItem getOrderItem(int index)
   {
-    OrderItem aOrderItem = orderItem.get(index);
+    OrderItem aOrderItem = orderItems.get(index);
     return aOrderItem;
   }
 
-  public List<OrderItem> getOrderItem()
+  public List<OrderItem> getOrderItems()
   {
-    List<OrderItem> newOrderItem = Collections.unmodifiableList(orderItem);
-    return newOrderItem;
+    List<OrderItem> newOrderItems = Collections.unmodifiableList(orderItems);
+    return newOrderItems;
   }
 
-  public int numberOfOrderItem()
+  public int numberOfOrderItems()
   {
-    int number = orderItem.size();
+    int number = orderItems.size();
     return number;
   }
 
-  public boolean hasOrderItem()
+  public boolean hasOrderItems()
   {
-    boolean has = orderItem.size() > 0;
+    boolean has = orderItems.size() > 0;
     return has;
   }
 
   public int indexOfOrderItem(OrderItem aOrderItem)
   {
-    int index = orderItem.indexOf(aOrderItem);
+    int index = orderItems.indexOf(aOrderItem);
     return index;
   }
   /* Code from template association_GetOne */
@@ -149,30 +149,42 @@ public class Order implements Serializable
   {
     return customer;
   }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfOrderItem()
+  /* Code from template association_IsNumberOfValidMethod */
+  public boolean isNumberOfOrderItemsValid()
   {
-    return 0;
+    boolean isValid = numberOfOrderItems() >= minimumNumberOfOrderItems();
+    return isValid;
   }
-  /* Code from template association_AddManyToOne */
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfOrderItems()
+  {
+    return 1;
+  }
+  /* Code from template association_AddMandatoryManyToOne */
   public OrderItem addOrderItem(Pizza aPizza)
   {
-    return new OrderItem(aPizza, this);
+    OrderItem aNewOrderItem = new OrderItem(aPizza, this);
+    return aNewOrderItem;
   }
 
   public boolean addOrderItem(OrderItem aOrderItem)
   {
     boolean wasAdded = false;
-    if (orderItem.contains(aOrderItem)) { return false; }
+    if (orderItems.contains(aOrderItem)) { return false; }
     Order existingOrder = aOrderItem.getOrder();
     boolean isNewOrder = existingOrder != null && !this.equals(existingOrder);
+
+    if (isNewOrder && existingOrder.numberOfOrderItems() <= minimumNumberOfOrderItems())
+    {
+      return wasAdded;
+    }
     if (isNewOrder)
     {
       aOrderItem.setOrder(this);
     }
     else
     {
-      orderItem.add(aOrderItem);
+      orderItems.add(aOrderItem);
     }
     wasAdded = true;
     return wasAdded;
@@ -182,11 +194,19 @@ public class Order implements Serializable
   {
     boolean wasRemoved = false;
     //Unable to remove aOrderItem, as it must always have a order
-    if (!this.equals(aOrderItem.getOrder()))
+    if (this.equals(aOrderItem.getOrder()))
     {
-      orderItem.remove(aOrderItem);
-      wasRemoved = true;
+      return wasRemoved;
     }
+
+    //order already at minimum (1)
+    if (numberOfOrderItems() <= minimumNumberOfOrderItems())
+    {
+      return wasRemoved;
+    }
+
+    orderItems.remove(aOrderItem);
+    wasRemoved = true;
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
@@ -196,9 +216,9 @@ public class Order implements Serializable
     if(addOrderItem(aOrderItem))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfOrderItem()) { index = numberOfOrderItem() - 1; }
-      orderItem.remove(aOrderItem);
-      orderItem.add(index, aOrderItem);
+      if(index > numberOfOrderItems()) { index = numberOfOrderItems() - 1; }
+      orderItems.remove(aOrderItem);
+      orderItems.add(index, aOrderItem);
       wasAdded = true;
     }
     return wasAdded;
@@ -207,12 +227,12 @@ public class Order implements Serializable
   public boolean addOrMoveOrderItemAt(OrderItem aOrderItem, int index)
   {
     boolean wasAdded = false;
-    if(orderItem.contains(aOrderItem))
+    if(orderItems.contains(aOrderItem))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfOrderItem()) { index = numberOfOrderItem() - 1; }
-      orderItem.remove(aOrderItem);
-      orderItem.add(index, aOrderItem);
+      if(index > numberOfOrderItems()) { index = numberOfOrderItems() - 1; }
+      orderItems.remove(aOrderItem);
+      orderItems.add(index, aOrderItem);
       wasAdded = true;
     } 
     else 
@@ -262,11 +282,11 @@ public class Order implements Serializable
 
   public void delete()
   {
-    while (orderItem.size() > 0)
+    while (orderItems.size() > 0)
     {
-      OrderItem aOrderItem = orderItem.get(orderItem.size() - 1);
+      OrderItem aOrderItem = orderItems.get(orderItems.size() - 1);
       aOrderItem.delete();
-      orderItem.remove(aOrderItem);
+      orderItems.remove(aOrderItem);
     }
     
     PDS placeholderPDS = pDS;
@@ -294,9 +314,13 @@ public class Order implements Serializable
     nextNumber++;
   }
 
-  // line 92 "../../../../../pds.ump"
-   public float calculateTotal(){
-    return 0.0f;
+  // line 91 "../../../../../pds.ump"
+   public float getTotalPrice(){
+    float totalPrice = 0;
+  	for(OrderItem o : this.getOrderItems()) {
+  		totalPrice += o.getCost();
+  	}
+  	return totalPrice;
   }
 
 

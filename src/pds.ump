@@ -18,9 +18,8 @@ class PDS {
 
 //Pizza abstract
 class Pizza {
-  abstract;
   Integer size = 12;
-  * -> * Ingredient ingredients;
+  * -> 1..* Ingredient ingredients;
   Float price;
   before constructor, setPrice {
     if (aPrice <= 0.0f ) {
@@ -87,9 +86,13 @@ class Order {
   Date date;
   Integer quantity = 1;
   Boolean isDelivered = false;
-  1 <@>- * OrderItem orderItem;
-  public float calculateTotal() {
-  	return 0.0f;
+  1 <@>- 1..* OrderItem orderItems;
+  public float getTotalPrice() {
+  	float totalPrice = 0;
+  	for(OrderItem o : this.getOrderItems()) {
+  		totalPrice += o.getCost();
+  	}
+  	return totalPrice;
   }	
 }
 
@@ -97,7 +100,17 @@ class OrderItem {
   * -> 1 Pizza pizza;
   * -> * Ingredient additionalIngredients;
   * -> * Ingredient removedIngredients;
-  public float calculateCost() {
-  	return 0.0f;
+  public float getCost() {
+  	float cost = 0;
+  	float additionalIngredientsCost = 0;
+  	float removedIngredientsReductionValue = 0;
+  	for(Ingredient i: this.getAdditionalIngredients()){
+  		removedIngredientsReductionValue += i.getPrice(); 
+  	}
+  	for(Ingredient i: this.getRemovedIngredients()){
+  		removedIngredientsReductionValue += i.getPrice(); 
+  	}
+  	cost = pizza.getPrice() + removedIngredientsReductionValue + (0.5f * removedIngredientsReductionValue);
+  	return cost;
   }
 }

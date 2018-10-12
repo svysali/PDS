@@ -5,7 +5,7 @@ package ca.mcgill.ecse.pds.model;
 import java.io.Serializable;
 
 // line 20 "../../../../../PDSPersistence.ump"
-// line 57 "../../../../../pds.ump"
+// line 56 "../../../../../pds.ump"
 public class Ingredient implements Serializable
 {
 
@@ -26,12 +26,12 @@ public class Ingredient implements Serializable
 
   public Ingredient(String aName, float aPrice, PDS aPDS)
   {
-    // line 60 "../../../../../pds.ump"
+    // line 59 "../../../../../pds.ump"
     if (aName == null || aName.length() == 0) {
     	  throw new RuntimeException("The name of an ingredient cannot be empty.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 66 "../../../../../pds.ump"
+    // line 65 "../../../../../pds.ump"
     if (aPrice <= 0.0f) {
     	  throw new RuntimeException("The price cannot be less than zero");
     	}
@@ -52,7 +52,7 @@ public class Ingredient implements Serializable
   public boolean setName(String aName)
   {
     boolean wasSet = false;
-    // line 60 "../../../../../pds.ump"
+    // line 59 "../../../../../pds.ump"
     if (aName == null || aName.length() == 0) {
     	  throw new RuntimeException("The name of an ingredient cannot be empty.");
     	}
@@ -65,7 +65,7 @@ public class Ingredient implements Serializable
   public boolean setPrice(float aPrice)
   {
     boolean wasSet = false;
-    // line 66 "../../../../../pds.ump"
+    // line 65 "../../../../../pds.ump"
     if (aPrice <= 0.0f) {
     	  throw new RuntimeException("The price cannot be less than zero");
     	}

@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 77 "../../../../../PDSPersistence.ump"
-// line 37 "../../../../../pds.ump"
+// line 36 "../../../../../pds.ump"
 public class MenuPizza extends Pizza implements Serializable
 {
 
@@ -25,15 +25,15 @@ public class MenuPizza extends Pizza implements Serializable
   // CONSTRUCTOR
   //------------------------
 
-  public MenuPizza(float aPrice, PDS aPDS, String aName, float aCalorieCount, Menu aMenu)
+  public MenuPizza(float aPrice, PDS aPDS, String aName, float aCalorieCount, Menu aMenu, Ingredient... allIngredients)
   {
-    super(aPrice, aPDS);
-    // line 41 "../../../../../pds.ump"
+    super(aPrice, aPDS, allIngredients);
+    // line 40 "../../../../../pds.ump"
     if (aName == null || aName.length() == 0) {
     	  throw new RuntimeException("The name for a pizza on the Menu cannot be empty.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 47 "../../../../../pds.ump"
+    // line 46 "../../../../../pds.ump"
     if (aCalorieCount <= 0.0f ) {
     	  throw new RuntimeException("The calorie count for a pizza on the Menu cannot be less than zero.");
     	}
@@ -54,7 +54,7 @@ public class MenuPizza extends Pizza implements Serializable
   public boolean setName(String aName)
   {
     boolean wasSet = false;
-    // line 41 "../../../../../pds.ump"
+    // line 40 "../../../../../pds.ump"
     if (aName == null || aName.length() == 0) {
     	  throw new RuntimeException("The name for a pizza on the Menu cannot be empty.");
     	}
@@ -67,7 +67,7 @@ public class MenuPizza extends Pizza implements Serializable
   public boolean setCalorieCount(float aCalorieCount)
   {
     boolean wasSet = false;
-    // line 47 "../../../../../pds.ump"
+    // line 46 "../../../../../pds.ump"
     if (aCalorieCount <= 0.0f ) {
     	  throw new RuntimeException("The calorie count for a pizza on the Menu cannot be less than zero.");
     	}
